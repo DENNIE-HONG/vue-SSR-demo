@@ -1,0 +1,4 @@
+node_modules
+dist
+src/assets/global.scss
+src/assets/normalize.css

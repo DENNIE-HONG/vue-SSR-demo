@@ -1,0 +1,26 @@
+.title {
+  display: block;
+  padding: rem(30) rem(20);
+  margin: 0;
+  border-bottom: 1px solid nth($fgray, 1);
+  line-height: 1;
+  background-color: white;
+  box-sizing: border-box;
+  @include hid;
+  >.pull-right {
+    color: nth($fblack, 3);
+    font-size: rem(24);
+    line-height: rem(24);
+    > .iconfont {
+      position: relative;
+      top: 2px;
+    }
+  }
+  > .iconfont {
+    padding-right: rem(10);
+    font-size: rem(34);
+    color: nth($fblack, 3);
+    position: relative;
+    top: 1px;
+  }
+}

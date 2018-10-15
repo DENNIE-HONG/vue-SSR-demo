@@ -1,0 +1,30 @@
+.btn-default,
+.btn-primary {
+  display: inline-block;
+  padding: rem(20) rem(30);
+  font-size: rem(28);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: rem(10);
+  text-align: center;
+  line-height: 1;
+  > .iconfont {
+    position: relative;
+    top: 1px;
+    font-size: rem(30);
+  }
+}
+.btn-default {
+  border-color: nth($fgray, 5);
+  background-color: white;
+}
+.btn-primary {
+  border-color: nth($fgreen, 1);
+  background-color: nth($fgreen, 1);
+  color: white;
+}
+.btn-large {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}

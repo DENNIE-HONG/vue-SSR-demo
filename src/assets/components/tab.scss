@@ -1,0 +1,14 @@
+.tab {
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+  border-bottom: 1px solid nth($fgray, 1);
+  &-item {
+    height: rem(80);
+    line-height: rem(80);
+    text-align: center;
+    &.active {
+      color: nth($fred, 1);
+    }
+  }
+}

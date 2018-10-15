@@ -1,0 +1,23 @@
+.search-header {
+  display: flex;
+  height: rem(60);
+  padding: 0 rem(15);
+  border: 1px solid nth($fblack, 3);
+  background-color: white;
+  box-sizing: border-box;
+  align-items: center;
+  border-radius: 2px;
+  > .iconfont {
+    padding-right: rem(5);
+  }
+  &-txt {
+    color: nth($fblack, 3);
+    font-size: rem(28);
+    &.active {
+      color: nth($fblack, 1);
+    }
+  }
+  &-input {
+    flex: 1;
+  }
+}

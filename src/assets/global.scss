@@ -1,0 +1,71 @@
+@import './normalize.css';
+body {
+  height: 100%;
+  font-size: 14px;
+  line-height: 1.75em;
+  font-family: Helvetica, Tahoma, Arial, 'PingFang SC', 'Microsoft YaHei',
+    '微软雅黑';
+  _font-family: '\5B8B\4F53';
+  color: #333333;
+  background-color: nth($fgray, 3);
+}
+
+/* link */
+a {
+  color: #333;
+  text-decoration: none;
+  outline: none;
+}
+
+/* 清除浮动 */
+.global-clearfix:after {
+  content: '.';
+  display: block;
+  visibility: hidden;
+  height: 0;
+  line-height: 0;
+  font-size: 0;
+  clear: both;
+}
+.global-clearfix {
+  zoom: 1;
+}
+.global-clear {
+  clear: both;
+}
+
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+img {
+  &.img-circle {
+    border-radius: 100px;
+  }
+}
+input,
+textarea,
+select {
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    box-shadow: 0 0 0 1000px #fff inset;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+input.placeholder {
+  color: #bbb;
+}
+
+html {
+  height: 100%;
+  &.lock {
+    overflow: hidden;
+  }
+}
+.hide {
+  display: none;
+}

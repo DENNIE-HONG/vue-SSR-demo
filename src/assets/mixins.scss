@@ -1,0 +1,24 @@
+@function rem($px) {
+  @return $px / 750 * 10rem;
+}
+@mixin wordbreak {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+@mixin hid {
+  overflow: hidden;
+}
+@mixin boxShadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+@mixin linehid($rows) {
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: $rows;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@mixin txthid {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

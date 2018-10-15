@@ -1,0 +1,18 @@
+.tag,
+.tag-default {
+  display: inline-block;
+  padding: rem(15) rem(20);
+  margin-right: rem(15);
+  margin-bottom: rem(20);
+  background-color: white;
+  border: 1px solid nth($fgray, 1);
+  border-radius: 4px;
+  line-height: 1;
+  > .iconfont {
+    padding-left: rem(5);
+    font-size: rem(30);
+  }
+}
+.tag-default {
+  background-color: nth($fgray, 1);
+}
