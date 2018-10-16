@@ -11,7 +11,7 @@ export function createApp (ssrContext) {
   const app = new Vue({
     router,
     ssrContext,
-    render: h => h(App)
+    render: (h) => h(App)
   });
   return { app, router }
 }

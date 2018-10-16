@@ -1,5 +1,5 @@
 <template>
-  <div>测试SSR哦</div>
+  <div>测试SSR</div>
 </template>
 <script>
 export default {
@@ -7,6 +7,9 @@ export default {
     return {
       msg: ''
     }
+  },
+  created () {
+    console.log('开始了');
   }
 }
 </script>

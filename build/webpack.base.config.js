@@ -13,8 +13,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WEBPACK_COMMON_CONFIG = require('../config/index.js').WEBPACK_COMMON_CONFIG;
 // const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const WEBPACK_PROD_CONFIG = require('../config/index.js').WEBPACK_PROD_CONFIG;
-module.exports = {
-  mode: 'production',
+const isProd = process.env.NODE_ENV === 'production';
+
+const config = {
   resolve: {
     extensions: ['.js','.vue'],
     alias: {
@@ -26,44 +27,31 @@ module.exports = {
       service: path.resolve(__dirname, '../src/service'),
     }
   },
+  devtool: isProd ? false : '#cheap-module-source-map',
+  mode: isProd ? 'production': 'development',
   output: {
     filename: 'js/[name].[chunkhash:8].js',
     path: WEBPACK_PROD_CONFIG.assetsDirectory,
     publicPath: WEBPACK_PROD_CONFIG.assetsPublicPath
   },
-  optimization: {
-    minimizer: [
-      new UglifyJSPlugin({
-        cache: true,
-        parallel: true,
-        uglifyOptions: {
-          compress: {
-            drop_console: true
-          },
-          output: {
-            comments: false
-          }
-        }
-      }),
-      new OptimizeCSSAssetsPlugin({
-        cssProcessorOptions: {
-          preset: ['default', { discardComments: { removeAll: true } }]
-        },
-      })
-    ],
-    moduleIds: 'hashed'
-  },
-  plugins: [
+  plugins: isProd ? [
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash:8].css',
+      chunkFilename: 'css/[name].[contenthash:8].css'
+    })
+  ]: [
     new VueLoaderPlugin(),
     new StyleLintPlugin({
       files: ['**/*.{vue,htm,html,css,sss,less,scss,sass}'],
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash:8].css',
-      chunkFilename: 'css/[name].[contenthash:8].css'
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[name].css'
     })
   ],
   module: {
+    noParse: /es6-promise\.js$/, // avoid webpack shimming process
     rules: [
       {
         test: /\.vue$/,
@@ -72,16 +60,31 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: isProd ? 'babel-loader' : ['babel-loader', 'eslint-loader'],
         exclude: /node_modules/
       },
       {
         test: /\.(css|scss)$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          'sass-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: !isProd
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: !isProd
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: !isProd
+            }
+          },
           {
             loader: 'sass-resources-loader',
             options: {
@@ -97,7 +100,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 8192,
-              name: 'img/[name].[hash:7].[ext]'
+              name: isProd ? 'img/[name].[hash:7].[ext]' : 'img/[name].[ext]'
             }
           }
         ]
@@ -109,7 +112,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 2048,
-              name: 'fonts/[name].[hash:7].[ext]'
+              name: isProd ? 'fonts/[name].[hash:7].[ext]': 'fonts/[name].[ext]'
             }
           }
         ]
@@ -117,3 +120,28 @@ module.exports = {
     ]
   }
 };
+isProd && (config.optimization = {
+  minimizer: [
+    new UglifyJSPlugin({
+      cache: true,
+      parallel: true,
+      uglifyOptions: {
+        compress: {
+          drop_console: true
+        },
+        output: {
+          comments: false
+        }
+      }
+    }),
+    new OptimizeCSSAssetsPlugin({
+      cssProcessorOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }]
+      },
+    })
+  ],
+  moduleIds: 'hashed'
+});
+
+module.exports = config;
+
