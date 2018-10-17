@@ -3,8 +3,10 @@
  * @author luyanhong 2018-10-15
 */
 import { createApp } from './main';
+const isDev = process.env.NODE_ENV !== 'production';
 export default (context) => new Promise((resolve, reject) => {
-  const { app, router } = createApp(context);
+  const s = isDev && Date.now();
+  const { app, router, store } = createApp(context);
   const { url } = context;
   const { fullPath } = router.resolve(url).route;
   if (fullPath !== url) {
@@ -17,6 +19,23 @@ export default (context) => new Promise((resolve, reject) => {
     if (!matchedComponents.length) {
       return reject({ code: 404 });
     }
-    resolve(app);
+    // Call fetchData hooks on components matched by the route.
+    // A preFetch hook dispatches a store action and returns a Promise,
+    // which is resolved when the action is complete and store state has been
+    // updated.
+    Promise.all(matchedComponents.map(({ asyncData }) => asyncData && asyncData({
+      store,
+      route: router.currentRoute
+    }))).then(() => {
+      isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`);
+      // After all preFetch hooks are resolved, our store is now
+      // filled with the state needed to render the app.
+      // Expose the state on the render context, and let the request handler
+      // inline the state in the HTML response. This allows the client-side
+      // store to pick-up the server-side state without having to duplicate
+      // the initial data fetching on the client.
+      context.state = store.state;
+      resolve(app);
+    }).catch(reject);
   }, reject);
 });

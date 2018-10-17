@@ -4,15 +4,11 @@
 */
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WEBPACK_COMMON_CONFIG = require('../config/index.js').WEBPACK_COMMON_CONFIG;
-// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const WEBPACK_PROD_CONFIG = require('../config/index.js').WEBPACK_PROD_CONFIG;
+const { WEBPACK_COMMON_CONFIG } = require('../config/index.js');
 const isProd = process.env.NODE_ENV === 'production';
 
 const config = {
@@ -24,15 +20,15 @@ const config = {
       config: path.resolve(__dirname, '../config'),
       utils: path.resolve(__dirname, '../src/utils'),
       views: path.resolve(__dirname, '../src/views'),
-      service: path.resolve(__dirname, '../src/service'),
+      api: path.resolve(__dirname, '../src/api'),
     }
   },
   devtool: isProd ? false : '#cheap-module-source-map',
   mode: isProd ? 'production': 'development',
   output: {
     filename: 'js/[name].[chunkhash:8].js',
-    path: WEBPACK_PROD_CONFIG.assetsDirectory,
-    publicPath: WEBPACK_PROD_CONFIG.assetsPublicPath
+    path: WEBPACK_COMMON_CONFIG.assetsDirectory,
+    publicPath: WEBPACK_COMMON_CONFIG.assetsPublicPath
   },
   plugins: isProd ? [
     new VueLoaderPlugin(),

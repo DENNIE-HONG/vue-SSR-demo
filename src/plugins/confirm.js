@@ -1,6 +1,6 @@
 /**
  * 封装confirm的方法
- * @author luyanhong 2018-09-27
+ * @author luyanhong 2018-10-17
 */
 import Vue from 'vue';
 import ConfirmBox from 'coms/ConfirmBox';
@@ -20,7 +20,7 @@ const callback = (action) => {
   instance = null;
 }
 const showConfirm = (text, opts) => new Promise((resolve, reject) => {
-  const propsData = { text, ...opts }
+  const propsData = { text, ...opts };
 
   instance = new ConfirmConponent({ propsData }).$mount();
   instance.reject = reject;

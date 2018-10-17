@@ -99,7 +99,7 @@ function render (ctx, next) {
   })
 }
 
-router.get('/', async (ctx, next) => {
+router.get('*', async (ctx, next) => {
   if (isProd) {
     await render(ctx, next);
   } else {

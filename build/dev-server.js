@@ -1,5 +1,5 @@
 /**
- * dev开发脚本
+ * dev开发脚本, 支持热重载
  * 参考https://github.com/vuejs/vue-hackernews-2.0/blob/master/build/setup-dev-server.js
 */
 const fs = require('fs');
@@ -16,6 +16,7 @@ const readFile = (fs, file) => {
     return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
   } catch (e) {
     console.error(e);
+    return;
   }
 };
 module.exports = function setupDevServer (app, templatePath, cb) {

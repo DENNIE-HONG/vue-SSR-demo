@@ -8,8 +8,11 @@ export default {
       msg: ''
     }
   },
+  asyncData ({ store }) {
+    return store.dispatch('setItem', 6545259);
+  },
   created () {
-    console.log('开始了');
+    console.log('开始');
   }
 }
 </script>
