@@ -4,18 +4,30 @@
 */
 import Vue from 'vue';
 import App from './App.vue';
-import 'assets/main.scss';
+import { sync } from 'vuex-router-sync';
+import VueLazyload from 'vue-lazyload';
 import { createRouter } from './plugins/router';
 import inject from './plugins/inject.js';
 import { createStore } from './store';
+import 'assets/main.scss';
+import loadingImg from 'assets/img/loading.gif';
+import errorImg from 'assets/img/error.png';
 Vue.use(inject);
-export function createApp (ssrContext) {
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: errorImg,
+  loading: loadingImg,
+  attempt: 1
+});
+export function createApp () {
+  // 创建 router 和 store 实例
   const router = createRouter();
-  const store = createStore()
+  const store = createStore();
+  // 同步路由状态(route state)到 store
+  sync(store, router);
   const app = new Vue({
     router,
     store,
-    ssrContext,
     render: (h) => h(App)
   });
   return { app, router, store };

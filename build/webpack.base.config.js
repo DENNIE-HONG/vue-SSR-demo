@@ -21,6 +21,7 @@ const config = {
       utils: path.resolve(__dirname, '../src/utils'),
       views: path.resolve(__dirname, '../src/views'),
       api: path.resolve(__dirname, '../src/api'),
+      store: path.resolve(__dirname, '../src/store')
     }
   },
   devtool: isProd ? false : '#cheap-module-source-map',
@@ -108,7 +109,7 @@ const config = {
             loader: 'url-loader',
             options: {
               limit: 2048,
-              name: isProd ? 'fonts/[name].[hash:7].[ext]': 'fonts/[name].[ext]'
+              name: isProd ? '/fonts/[name].[hash:7].[ext]': '/fonts/[name].[ext]'
             }
           }
         ]

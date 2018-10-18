@@ -7,14 +7,14 @@ import { createApp } from './main';
 // a global mixin that calls `asyncData` when a route component's params change
 Vue.mixin({
   beforeRouteUpdate (to, from, next) {
-    const { asyncData } = this.$options
+    const { asyncData } = this.$options;
     if (asyncData) {
       asyncData({
         store: this.$store,
         route: to
-      }).then(next).catch(next)
+      }).then(next).catch(next);
     } else {
-      next()
+      next();
     }
   }
 });
@@ -26,10 +26,10 @@ if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
 }
 router.onReady(() => {
-  // Add router hook for handling asyncData.
-  // Doing it after initial route is resolved so that we don't double-fetch
-  // the data that we already have. Using router.beforeResolve() so that all
-  // async components are resolved.
+  // 添加路由钩子函数，用于处理 asyncData.
+  // 在初始路由 resolve 后执行，
+  // 以便我们不会二次预取(double-fetch)已有的数据。
+  // 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
   router.beforeResolve((to, from, next) => {
     const matched = router.getMatchedComponents(to);
     const prevMatched = router.getMatchedComponents(from);
