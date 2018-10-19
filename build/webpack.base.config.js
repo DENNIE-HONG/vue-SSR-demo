@@ -13,7 +13,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const config = {
   resolve: {
-    extensions: ['.js','.vue'],
+    extensions: ['.js','.vue', '.json'],
     alias: {
       assets: path.resolve(__dirname, '../src/assets'),
       coms: path.resolve(__dirname, '../src/components'),

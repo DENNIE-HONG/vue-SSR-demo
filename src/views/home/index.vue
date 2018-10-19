@@ -46,8 +46,10 @@ export default {
     store.registerModule('home', homeStoreMudle);
     return store.dispatch('home/FETCH');
   },
+  // 重要信息：当多次访问路由时，
+  // 避免在客户端重复注册模块。
   destroyed () {
-    this.$store.unregisterModule('home');
+    // this.$store.unregisterModule('home');
   },
   methods: {
     loadSuccess (res) {

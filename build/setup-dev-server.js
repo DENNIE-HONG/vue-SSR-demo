@@ -23,12 +23,11 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   let bundle;
   let template;
   let clientManifest;
-
   let ready;
   const readyPromise = new Promise(r => { ready = r; });
   const update = () => {
     if (bundle && clientManifest) {
-      ready();
+      // ready();
       cb(bundle, {
         template,
         clientManifest
@@ -45,8 +44,8 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   });
 
   // modify client config to work with hot middleware
-  clientConfig.entry.app = ['webpack-hot-middleware/client', clientConfig.entry.app];
-  clientConfig.output.filename = '[name].js';
+  // clientConfig.entry.app = ['webpack-hot-middleware/client', clientConfig.entry.app];
+  clientConfig.output.filename = 'js/[name].js';
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
@@ -56,7 +55,11 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   const clientCompiler = webpack(clientConfig);
   const webpackDevMiddleware = devMiddleware(clientCompiler, {
     publicPath: clientConfig.output.publicPath,
-    noInfo: true
+    noInfo: true,
+    stats: { //  用于形成统计信息的选项
+      colors: true,
+      chunks: false
+    }
   });
   app.use(webpackDevMiddleware);
   clientCompiler.plugin('done', stats => {
@@ -90,5 +93,5 @@ module.exports = function setupDevServer (app, templatePath, cb) {
     update();
   });
 
-  return readyPromise;
+  // return readyPromise;
 };

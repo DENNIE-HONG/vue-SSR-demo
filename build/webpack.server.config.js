@@ -2,6 +2,7 @@
  * 服务端webpack配置
  * @author luyanhong 2018-10-15
 */
+const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
 const nodeExternals = require('webpack-node-externals');
@@ -21,8 +22,8 @@ module.exports = merge(baseConfig, {
 
   // 此处告知 server bundle 使用 Node 风格导出模块(Node-style exports)
   output: {
-    path: path.resolve(__dirname, '../dist'),
     libraryTarget: 'commonjs2',
+    filename: 'server-bundle.js'
   },
 
   // https://webpack.js.org/configuration/externals/#function
@@ -40,6 +41,10 @@ module.exports = merge(baseConfig, {
   // 构建为单个 JSON 文件的插件。
   // 默认文件名为 `vue-ssr-server-bundle.json`
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.VUE_ENV': '"server"'
+    }),
     new VueSSRServerPlugin()
   ]
 });

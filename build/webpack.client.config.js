@@ -9,7 +9,9 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WEBPACK_COMMON_CONFIG = require('../config/index.js').WEBPACK_COMMON_CONFIG;
 module.exports = merge(baseConfig, {
-  entry: path.resolve(__dirname, '../src/client-entry.js'),
+  entry: { 
+    app: path.resolve(__dirname, '../src/client-entry.js')
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {

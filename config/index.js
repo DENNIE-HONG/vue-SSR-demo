@@ -30,12 +30,12 @@ const WEBPACK_PROD_CONFIG = {
 };
 // axios 默认配置
 const AXIOS_DEFAULT_CONFIG = {
-  timeout: 20000,
+  timeout: 10000,
   maxContentLength: 200000,
   baseURL: '',
-  headers: {
-    Accept: 'application/json'
-  }
+  // headers: {
+  //   Accept: 'application/json'
+  // }
 };
 module.exports = {
   WEBPACK_COMMON_CONFIG,
