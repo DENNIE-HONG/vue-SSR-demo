@@ -30,6 +30,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-static2": "^0.1.8",
+    "koa3-proxy": "^1.0.0",
     "throttle-debounce": "^2.0.1",
     "universal-cookie": "^2.2.0",
     "vue": "^2.5.17",

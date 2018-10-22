@@ -7,6 +7,7 @@ const fs = require('fs');
 const Koa = require('koa');
 const KoaRuoter = require('koa-router');
 const serve = require('koa-static');
+const proxy = require('koa3-proxy');
 const { createBundleRenderer } = require('vue-server-renderer');
 const LRU = require('lru-cache');
 const PORT = 4444;
@@ -23,7 +24,7 @@ function createRenderer (bundle, options) {
     }),
     basedir: resolve('./dist'),
     runInNewContext: false
-    }));
+  }));
 }
 let renderer;
 let readyPromise;
@@ -43,77 +44,33 @@ if (isProd) {
 } else {
   // In development: setup the dev server with watch and hot-reload,
   // and create a new renderer on bundle / index template update.
-  require('./build/setup-dev-server')(
+  readyPromise = require('./build/setup-dev-server')(
     app,
     templatePath,
     (bundle, options) => {
       renderer = createRenderer(bundle, options);
     }
-  )
+  );
 }
 app.use(serve(path.resolve(__dirname, './dist')));
-// const bundle = require('./dist/vue-ssr-server-bundle.json');
-// const clientManifest = require('./dist/vue-ssr-client-manifest.json');
-// let renderer = createRenderer(bundle, {
-//   clientManifest
-// });
-/**
- * 渲染函数
- * @param ctx
- * @param next
- * @returns {Promise}
- */
-function render (ctx, next) {
-  ctx.set('Content-Type', 'text/html');
-  const s = Date.now();
-  return new Promise (function (resolve, reject) {
-    const handleError = err => {
-      // if (err && err.code === 404) {
-      //   ctx.status = 404;
-      //   ctx.body = '404 | Page Not Found';
-      // } else {
-      //   ctx.status = 500;
-      //   ctx.body = '500 | Internal Server Error';
-      //   console.error(`error during render : ${ctx.url}`);
-      //   console.error(err.stack);
-      // }
-      if (err && err.code === 500) {
-        ctx.status = 500;
-        ctx.body = '500 | Internal Server Error';
-        console.error(`error during render : ${ctx.url}`);
-        console.error(err.stack);
-      }
-      resolve();
-    }
-    const context = {
-      title: '测试ssr',
-      url: ctx.url
-    };
-    // 这里无需传入一个应用程序，因为在执行 bundle 时已经自动创建过。
-    // 现在我们的服务器与应用程序已经解耦！
-    renderer.renderToString(context, (err, html) => {
-      if (err) {
-        return handleError(err);
-      }
-      ctx.body = html;
-      if (!isProd) {
-        console.log(`whole request: ${Date.now() - s}ms`);
-      }
-      resolve();
-    })
-  })
-}
-// router.get('*', async (ctx, next) => {
-//   if (isProd) {
-//     await render(ctx, next);
-//   } else {
-//     await readyPromise.then(() => render(ctx, next));
-//   }
-// });
+
+
 const renderData = (ctx, renderer) => {
   const context = {
     url: ctx.url
   };
+  if (!isProd) {
+    readyPromise.then( () => {
+      return new Promise( (resolve, reject) => {
+        renderer.renderToString(context, (err, html) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(html);
+        });
+      });
+    });
+  }
   return new Promise( (resolve, reject) => {
     renderer.renderToString(context, (err, html) => {
       if (err) {
@@ -122,20 +79,28 @@ const renderData = (ctx, renderer) => {
       resolve(html);
     });
   });
-}
-router.get('*', async(ctx, next) => {
+};
+router.get('/index/recommend.action', async ctx =>
+  ctx.body = await proxy(ctx, {
+    target: 'https://m.jd.com',
+    changeOrigin: true
+  })
+    .then(res => res)
+    .catch(err => { throw err; })
+);
+router.get('*', async (ctx, next) => {
   const s = Date.now();
   let html,status;
   try {
-    html = await renderData(ctx, renderer)
+    html = await renderData(ctx, renderer);
   } catch(e) {
     if (e.code === 404) {
-      status = 404
-      html = '404 | Not Found'
+      status = 404;
+      html = '404 | Not Found';
     }else{
-      status = 500
-      html = '500 | Internal Server Error'
-      console.error(`error during render : ${ctx.url}`)
+      status = 500;
+      html = '500 | Internal Server Error';
+      console.error(`error during render : ${ctx.url}`);
     }
   }
   ctx.type = 'html';
@@ -146,7 +111,7 @@ router.get('*', async(ctx, next) => {
   }
 });
 app.use(router.routes())
-   .use(router.allowedMethods())
-   .listen(PORT, () => {
-      console.log(`server started at localhost:${PORT}`)
-   });
+  .use(router.allowedMethods())
+  .listen(PORT, () => {
+    console.log(`server started at localhost:${PORT}`);
+  });

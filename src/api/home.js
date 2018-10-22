@@ -11,7 +11,7 @@ export const getRecommend = (page = 1) => {
   };
   return axios({
     method: 'get',
-    url: 'https://m.jd.com/index/recommend.action',
+    url: '/index/recommend.action',
     params,
     responseType: 'json'
   });

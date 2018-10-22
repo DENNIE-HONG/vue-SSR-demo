@@ -29,7 +29,8 @@ const config = {
   output: {
     filename: 'js/[name].[chunkhash:8].js',
     path: WEBPACK_COMMON_CONFIG.assetsDirectory,
-    publicPath: WEBPACK_COMMON_CONFIG.assetsPublicPath
+    publicPath: WEBPACK_COMMON_CONFIG.assetsPublicPath,
+    chunkFilename: 'js/[name].[chunkhash:8].js'
   },
   plugins: isProd ? [
     new VueLoaderPlugin(),

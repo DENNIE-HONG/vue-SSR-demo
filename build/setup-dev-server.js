@@ -25,9 +25,9 @@ module.exports = function setupDevServer (app, templatePath, cb) {
   let clientManifest;
   let ready;
   const readyPromise = new Promise(r => { ready = r; });
-  const update = () => {
+  const update = async () => {
     if (bundle && clientManifest) {
-      // ready();
+      await ready();
       cb(bundle, {
         template,
         clientManifest
@@ -93,5 +93,5 @@ module.exports = function setupDevServer (app, templatePath, cb) {
     update();
   });
 
-  // return readyPromise;
+  return readyPromise;
 };

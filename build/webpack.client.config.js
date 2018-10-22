@@ -9,7 +9,7 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WEBPACK_COMMON_CONFIG = require('../config/index.js').WEBPACK_COMMON_CONFIG;
 module.exports = merge(baseConfig, {
-  entry: { 
+  entry: {
     app: path.resolve(__dirname, '../src/client-entry.js')
   },
   optimization: {
@@ -45,4 +45,4 @@ module.exports = merge(baseConfig, {
     // 生成 `vue-ssr-client-manifest.json`。
     new VueSSRClientPlugin()
   ]
-})
+});

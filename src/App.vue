@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <router-view
-      :key="$route.fullpath +new Date()"
-      class="content"></router-view>
+    <keep-alive>
+      <router-view
+        :key="$route.fullpath +new Date()"
+        class="content"></router-view>
+    </keep-alive>
     <the-footer />
   </div>
 </template>
