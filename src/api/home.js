@@ -4,14 +4,14 @@
  * @author luyanhong 2018-10-18
  */
 import axios from '../plugins/axios';
-export const getRecommend = (page = 1) => {
+export const getRecommend = (data) => {
   const params = {
-    _format_: 'json',
-    page
+    pc: data.pageSize,
+    pi: data.page || 1
   };
   return axios({
     method: 'get',
-    url: '/index/recommend.action',
+    url: '/jdapi/mcoss/reclike/getrecinfo',
     params,
     responseType: 'json'
   });

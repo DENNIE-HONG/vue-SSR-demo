@@ -7,16 +7,22 @@ const home = {
     }
   },
   mutations: {
-    FETCH: (state, res) => {
-      const result = JSON.parse(res.data.recommend);
-      state.productList = result.wareInfoList;
+    FETCH: (state, data) => {
+      if (data.length) {
+        state.productList = state.productList.concat(data);
+      }
     }
   },
   actions: {
-    FETCH: ({ commit }, page) => getRecommend(page).then((res) => {
-      commit('FETCH', res);
-    }).catch((error) => {
-      console.error(error.Error);
+    FETCH: ({ commit }, sendData) => new Promise((resolve, reject) => {
+      getRecommend(sendData).then((res) => {
+        const results = res.data.data;
+        commit('FETCH', results);
+        resolve(results);
+      }).catch((error) => {
+        console.error(error);
+        reject(error);
+      })
     })
   }
 }

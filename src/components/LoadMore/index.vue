@@ -32,8 +32,8 @@
  * @example
  * <load-more url="xxx" success="function" params="{}" />
 */
-import jsonp from 'jsonp';
-import querystring from 'querystring';
+// import jsonp from 'jsonp';
+// import querystring from 'querystring';
 import { debounce } from 'throttle-debounce';
 import scrollBottom from 'utils/scroll-bottom.js';
 const READY = 1; // 准备
@@ -56,17 +56,12 @@ export default {
       type: Function
     },
     params: Object,
-    isImmediateLoad: {
-      default: true,
-      type: Boolean
-    },
     jsonp: {
       default: false,
       type: Boolean
     }
   },
   mounted () {
-    this.isImmediateLoad && this.loadmore();
     // 绑定触底加载更多
     const debounceScroll = debounce(100, this.scrollToBottomLoading.bind(this));
     window.addEventListener('scroll', debounceScroll);
@@ -80,26 +75,18 @@ export default {
     /**
      * 点击加载更多
     */
-    async loadmore () {
+    loadmore () {
       this.state = LOADING;
-      if (this.jsonp) {
-        const q = querystring.encode(this.params);
-        jsonp(`${this.url}?${q}`, { timeout: 8000 }, (err, res) => {
-          if (err) {
-            this.fail('网络不给力，请稍后再试哦');
-            return;
-          }
-          this.state = READY;
-          this.success(res);
-        });
-      } else {
-        this.$api[this.url](this.params).then((res)=> {
-          this.state = READY;
-          this.success(res);
-        }).catch(() => {
-          this.fail('网络不给力，请稍后再试哦');
-        });
-      }
+      this.$store.dispatch(this.url, this.params).then((data)=> {
+        this.state = READY;
+        if (data.length < this.params.pageSize) {
+          this.toEnd();
+        } else {
+          this.success();
+        }
+      }).catch(() => {
+        this.fail('网络开小差啦');
+      });
     },
     /**
      * 加载失败

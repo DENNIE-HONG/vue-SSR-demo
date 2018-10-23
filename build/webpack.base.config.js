@@ -98,7 +98,7 @@ const config = {
             loader: 'url-loader',
             options: {
               limit: 8192,
-              name: isProd ? 'img/[name].[hash:7].[ext]' : 'img/[name].[ext]'
+              name: isProd ? '/img/[name].[hash:7].[ext]' : '/img/[name].[ext]'
             }
           }
         ]

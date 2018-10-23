@@ -7,7 +7,7 @@ const fs = require('fs');
 const Koa = require('koa');
 const KoaRuoter = require('koa-router');
 const serve = require('koa-static');
-const proxy = require('koa3-proxy');
+const proxy = require('koa-server-http-proxy');
 const { createBundleRenderer } = require('vue-server-renderer');
 const LRU = require('lru-cache');
 const PORT = 4444;
@@ -52,8 +52,12 @@ if (isProd) {
     }
   );
 }
-app.use(serve(path.resolve(__dirname, './dist')));
-
+app.use(serve(path.resolve(__dirname, './dist')))
+  .use(proxy('/jdapi', {
+    target: 'https://wqcoss.jd.com',
+    changeOrigin: true,
+    pathRewrite: { '^/jdapi': '' }
+  }));
 
 const renderData = (ctx, renderer) => {
   const context = {
@@ -80,14 +84,7 @@ const renderData = (ctx, renderer) => {
     });
   });
 };
-router.get('/index/recommend.action', async ctx =>
-  ctx.body = await proxy(ctx, {
-    target: 'https://m.jd.com',
-    changeOrigin: true
-  })
-    .then(res => res)
-    .catch(err => { throw err; })
-);
+
 router.get('*', async (ctx, next) => {
   const s = Date.now();
   let html,status;
@@ -97,7 +94,7 @@ router.get('*', async (ctx, next) => {
     if (e.code === 404) {
       status = 404;
       html = '404 | Not Found';
-    }else{
+    }else {
       status = 500;
       html = '500 | Internal Server Error';
       console.error(`error during render : ${ctx.url}`);
@@ -110,8 +107,9 @@ router.get('*', async (ctx, next) => {
     console.log(`whole request: ${Date.now() - s}ms`);
   }
 });
+
 app.use(router.routes())
   .use(router.allowedMethods())
   .listen(PORT, () => {
-    console.log(`server started at localhost:${PORT}`);
+    console.log(`server started at 127.0.0.1:${PORT}`);
   });

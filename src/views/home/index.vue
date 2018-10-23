@@ -6,7 +6,7 @@
         <h3 class="home-guess-txt"><i class="iconfont icon-search"></i>猜你喜欢</h3>
       </div>
       <product-list :productList="productList"/>
-      <!-- <load-more :url="url" :success="loadSuccess" :params="sendData" ref="loadmore"/> -->
+      <load-more :url="url" :success="loadSuccess" :params="sendData" ref="loadmore"/>
     </section>
     <footer class="home-footer">
       <nav>
@@ -21,7 +21,7 @@
 // import TheHead from 'coms/TheHead/index.vue';
 import ProductList from 'coms/ProductList/index.vue';
 import LoadMore from 'coms/LoadMore/index.vue';
-import homeStoreMudle from 'store/modules/home';
+// import homeStoreMudle from 'store/modules/home';
 export default {
   name: 'Home',
   components: {
@@ -31,9 +31,10 @@ export default {
   },
   data () {
     return {
-      url: 'api/recommend.action',
+      url: 'home/FETCH',
       sendData: {
-        page: 1
+        page: 1,
+        pageSize: 22
       }
     }
   },
@@ -43,27 +44,15 @@ export default {
     }
   },
   asyncData ({ store }) {
-    store.registerModule('home', homeStoreMudle);
-    return store.dispatch('home/FETCH');
+    return store.dispatch('home/FETCH', { page: 1, pageSize: 22 });
   },
-  // 重要信息：当多次访问路由时，
-  // 避免在客户端重复注册模块。
-  destroyed () {
-    this.$store.unregisterModule('home');
+  // 服务端加载第一页后更新页数
+  mounted () {
+    this.loadSuccess();
   },
   methods: {
-    loadSuccess (res) {
-      if (res.status === 200) {
-        const result = JSON.parse(res.data.recommend);
-        if (result.wareInfoList.length) {
-          this.productList = this.productList.concat(result.wareInfoList);
-          this.sendData.page += 1;
-        } else {
-          this.$refs.loadmore.toEnd();
-        }
-      } else {
-        this.$refs.loadmore.fail(res.statusText);
-      }
+    loadSuccess () {
+      this.sendData.page += 1;
     }
   }
 }

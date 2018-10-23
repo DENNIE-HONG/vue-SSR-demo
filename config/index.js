@@ -18,7 +18,7 @@ const WEBPACK_DEV_CONFIG = {
   env: {
     production: false
   },
-  port: 5555, //端口号
+  port: 4444, //端口号
   assetsPublicPath: '/', // 编译发布的根目录
   assetsDirectory: resolve('dist'),//资源路径
   assetsViews: resolve('index.html') //页面模板
@@ -32,7 +32,7 @@ const WEBPACK_PROD_CONFIG = {
 const AXIOS_DEFAULT_CONFIG = {
   timeout: 10000,
   maxContentLength: 200000,
-  baseURL: '',
+  baseURL: 'http://127.0.0.1:4444',
   // headers: {
   //   Accept: 'application/json'
   // }
