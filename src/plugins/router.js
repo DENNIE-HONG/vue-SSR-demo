@@ -8,7 +8,7 @@ import Router from 'vue-router';
 import routes from '../routes/index.js';
 // import isLogin from 'utils/isLogin.js';
 Vue.use(Router);
-export function createRouter () {
+export default function createRouter () {
   return new Router({
     mode: 'history',
     scrollBehavior: () => ({ y: 0 }),

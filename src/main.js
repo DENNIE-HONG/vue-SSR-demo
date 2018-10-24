@@ -6,7 +6,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import { sync } from 'vuex-router-sync';
 import VueLazyload from 'vue-lazyload';
-import { createRouter } from './plugins/router';
+import createRouter from './plugins/router';
 import inject from './plugins/inject.js';
 import { createStore } from './store';
 import 'assets/main.scss';

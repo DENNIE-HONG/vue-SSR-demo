@@ -10,12 +10,14 @@ const serve = require('koa-static');
 const proxy = require('koa-server-http-proxy');
 const { createBundleRenderer } = require('vue-server-renderer');
 const LRU = require('lru-cache');
+const favicon = require('koa-favicon');
 const PORT = 4444;
 const isProd = process.env.NODE_ENV === 'production';
 const resolve = file => path.resolve(__dirname, file);
 const app = new Koa();
 const router = new KoaRuoter();
 const templatePath = resolve('./index.html');
+const proxyTable = require('./config/proxy');
 function createRenderer (bundle, options) {
   return createBundleRenderer(bundle, Object.assign(options, {
     cache: LRU({
@@ -52,12 +54,15 @@ if (isProd) {
     }
   );
 }
+
 app.use(serve(path.resolve(__dirname, './dist')))
-  .use(proxy('/jdapi', {
-    target: 'https://wqcoss.jd.com',
-    changeOrigin: true,
-    pathRewrite: { '^/jdapi': '' }
-  }));
+  .use(favicon(__dirname + '/favicon.ico'));
+// proxy
+Object.keys(proxyTable).forEach((context) => {
+  const options = proxyTable[context];
+  app.use(proxy(context, options));
+});
+
 
 const renderData = (ctx, renderer) => {
   const context = {

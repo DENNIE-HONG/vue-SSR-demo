@@ -16,7 +16,6 @@ const readFile = (fs, file) => {
     return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
   } catch (e) {
     console.error(e);
-    return;
   }
 };
 module.exports = function setupDevServer (app, templatePath, cb) {

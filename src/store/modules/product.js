@@ -1,11 +1,12 @@
 import { getQuestion } from 'api/product';
 const product = {
+  namespaced: true,
   state: {
-    productList: []
+    broadcastList: []
   },
   mutations: {
-    FETCH: (state, data) => {
-      state.productList = data;
+    GUESS: (state, data) => {
+      state.broadcastList = data;
     }
   },
   actions: {

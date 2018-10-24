@@ -22,20 +22,26 @@ export const getQuestion = (productId = required()) => {
   //   })
   // });
 }
+/***
+ * 猜你喜欢接口，SSR直出
+ * @param {String} productId, 商品id
+ */
 export const getGuess = (productId = required()) => {
   const params = {
     sku: productId,
     pc: 30
   };
   const q = querystring.encode(params);
-  return new Promise((resolve, reject) => {
-    jsonp(`${GET_GUESS_URL}?${q}`, { timeout: 10000 }, (err, res) => {
-      if (err) {
-        reject('网络不给力，请稍后再试');
-      }
-      resolve(res);
-    })
-  });
+  return request.get(`${GET_GUESS_URL}?${q}&callback=`);
+  // const q = querystring.encode(params);
+  // return new Promise((resolve, reject) => {
+  //   jsonp(`${GET_GUESS_URL}?${q}`, { timeout: 10000 }, (err, res) => {
+  //     if (err) {
+  //       reject('网络不给力，请稍后再试');
+  //     }
+  //     resolve(res);
+  //   })
+  // });
 }
 export const getSpecification = (productId = required()) => {
   const params = {

@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <header-box />
     <section>
       <div class="home-guess">
         <span class="line"></span>
@@ -18,14 +19,13 @@
   </div>
 </template>
 <script>
-// import TheHead from 'coms/TheHead/index.vue';
-import ProductList from 'coms/ProductList/index.vue';
-import LoadMore from 'coms/LoadMore/index.vue';
-// import homeStoreMudle from 'store/modules/home';
+import HeaderBox from 'coms/HeaderBox';
+import ProductList from 'coms/ProductList';
+import LoadMore from 'coms/LoadMore';
 export default {
   name: 'Home',
   components: {
-    // TheHead,
+    HeaderBox,
     ProductList,
     LoadMore
   },
