@@ -9,10 +9,17 @@ const required = () => {
 }
 export const getQuestion = (productId = required()) => {
   const params = {
-    productId
+    productId,
+    callback: 'askAnswerCBA'
   };
   const q = querystring.encode(params);
-  return request.get(`${GET_QUESTION_URL}?${q}&callback=askAnswerCBA`);
+  return request.get(`${GET_QUESTION_URL}?${q}`);
+  // return request({
+  //   method: 'get',
+  //   url: GET_QUESTION_URL,
+  //   params,
+  //   responseType: 'text'
+  // });
   // return new Promise((resolve, reject) => {
   //   jsonp(`${GET_QUESTION_URL}?${q}`, { timeout: 10000 }, (err, res) => {
   //     if (err) {
@@ -32,16 +39,7 @@ export const getGuess = (productId = required()) => {
     pc: 30
   };
   const q = querystring.encode(params);
-  return request.get(`${GET_GUESS_URL}?${q}&callback=`);
-  // const q = querystring.encode(params);
-  // return new Promise((resolve, reject) => {
-  //   jsonp(`${GET_GUESS_URL}?${q}`, { timeout: 10000 }, (err, res) => {
-  //     if (err) {
-  //       reject('网络不给力，请稍后再试');
-  //     }
-  //     resolve(res);
-  //   })
-  // });
+  return request.get(`${GET_GUESS_URL}?${q}`);
 }
 export const getSpecification = (productId = required()) => {
   const params = {

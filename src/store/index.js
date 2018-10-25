@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 // import actions from './actions';
 import home from './modules/home';
+import product from './modules/product';
 Vue.use(Vuex);
 
 export function createStore () {
@@ -10,7 +11,8 @@ export function createStore () {
       items: ''
     },
     modules: {
-      home
+      home,
+      product
     },
     mutations: {
       setItem (state, res) {

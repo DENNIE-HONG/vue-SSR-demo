@@ -13,3 +13,5 @@
 2、store不用注册模式
   因为node端的store和客户端不同，加载更多列表无法dispatch到数据，actions无法复用
   直接在index里注册模块
+
+3、直出需要用到vue-touch, 用vue-touch-hotfix模块修复window报错

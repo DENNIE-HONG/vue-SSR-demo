@@ -112,7 +112,6 @@ router.get('*', async (ctx, next) => {
     console.log(`whole request: ${Date.now() - s}ms`);
   }
 });
-
 app.use(router.routes())
   .use(router.allowedMethods())
   .listen(PORT, () => {

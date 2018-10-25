@@ -32,10 +32,7 @@ const WEBPACK_PROD_CONFIG = {
 const AXIOS_DEFAULT_CONFIG = {
   timeout: 10000,
   maxContentLength: 200000,
-  baseURL: 'http://127.0.0.1:4444',
-  // headers: {
-  //   Accept: 'application/json'
-  // }
+  baseURL: 'http://127.0.0.1:4444'
 };
 module.exports = {
   WEBPACK_COMMON_CONFIG,

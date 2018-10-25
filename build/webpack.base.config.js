@@ -21,7 +21,8 @@ const config = {
       utils: path.resolve(__dirname, '../src/utils'),
       views: path.resolve(__dirname, '../src/views'),
       api: path.resolve(__dirname, '../src/api'),
-      store: path.resolve(__dirname, '../src/store')
+      store: path.resolve(__dirname, '../src/store'),
+      // 'hammerjs$': 'vue-touch/dist/hammer-ssr.js'
     }
   },
   devtool: isProd ? false : '#cheap-module-source-map',

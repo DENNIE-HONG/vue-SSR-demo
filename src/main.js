@@ -6,8 +6,12 @@ import Vue from 'vue';
 import App from './App.vue';
 import { sync } from 'vuex-router-sync';
 import VueLazyload from 'vue-lazyload';
+import VueTouch from 'vue-touch-hotfix';
+// 引入插件
 import createRouter from './plugins/router';
 import inject from './plugins/inject.js';
+require('./plugins/componentRegister.js');
+
 import { createStore } from './store';
 import 'assets/main.scss';
 import loadingImg from 'assets/img/loading.gif';
@@ -19,6 +23,7 @@ Vue.use(VueLazyload, {
   loading: loadingImg,
   attempt: 1
 });
+Vue.use(VueTouch, { name: 'v-touch' });
 export function createApp () {
   // 创建 router 和 store 实例
   const router = createRouter();
