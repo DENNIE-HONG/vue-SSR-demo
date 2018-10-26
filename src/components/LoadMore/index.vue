@@ -59,12 +59,20 @@ export default {
     jsonp: {
       default: false,
       type: Boolean
+    },
+    async: {
+      default: false,
+      type: Boolean
     }
   },
   mounted () {
     // 绑定触底加载更多
     const debounceScroll = debounce(100, this.scrollToBottomLoading.bind(this));
     window.addEventListener('scroll', debounceScroll);
+    // 异步渲染
+    if (this.async) {
+      this.loadmore();
+    }
   },
   data () {
     return {
@@ -82,7 +90,7 @@ export default {
         if (data.length < this.params.pageSize) {
           this.toEnd();
         } else {
-          this.success();
+          this.success(data);
         }
       }).catch(() => {
         this.fail('网络开小差啦');

@@ -18,11 +18,11 @@
       <empty-list text="哈哈哈哈哈，抓不到数据啦"/>
     </section>
     <section class="product-comment">
-      <!-- <comment-list
+      <comment-list
         :isSimple="isCommentSimple"
         @showComment="showComment"
         :productId="productId"
-      /> -->
+      />
     </section>
     <section
       v-if="questionList.length"
@@ -80,10 +80,10 @@
 </template>
 <script>
 import HeaderBanner from 'coms/HeaderBanner';
-// import CommentList from 'coms/CommentList';
+import CommentList from 'coms/CommentList';
 import EmptyList from 'coms/EmptyList';
 import BroadCast from 'coms/BroadCast';
-import { getQuestion, getGuess, getSpecification } from 'api/product.js'
+import { getSpecification } from 'api/product.js'
 export default {
   name: 'Product',
   metaInfo: {
@@ -101,7 +101,7 @@ export default {
   },
   components: {
     HeaderBanner,
-    // CommentList,
+    CommentList,
     EmptyList,
     BroadCast
   },
@@ -124,8 +124,6 @@ export default {
   },
   asyncData ({ store, route }) {
     return store.dispatch('product/FETCH', route.params.productId);
-    // store.dispatch('product/GUESS', route.params.productId);
-    // store.dispatch('product/QUESTION', route.params.productId)
   },
   created () {
     // this.fetchGuess();
@@ -148,16 +146,6 @@ export default {
       if (activeName === 'specification' && !this.specification.length) {
         this.fetchSpecification();
       }
-    },
-    // 获取问答数据
-    fetchQuestion () {
-      getQuestion(this.productId).then((res) => {
-        if (res.resultCode === '0') {
-          this.questionList = res.result.questionList;
-        }
-      }).catch((err) => {
-        this.fetchFail(err);
-      })
     },
     // 获取规格参数
     fetchSpecification () {

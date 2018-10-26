@@ -1,10 +1,10 @@
-import { getQuestion } from 'api/product';
-import { getGuess } from 'api/product';
+import { getQuestion, getGuess, getComments } from 'api/product';
 const product = {
   namespaced: true,
   state: {
     broadcastList: [],
-    questionList: []
+    questionList: [],
+    commentList: []
   },
   mutations: {
     GUESS: (state, data) => {
@@ -12,6 +12,13 @@ const product = {
     },
     QUESTION: (state, data) => {
       state.questionList = data;
+    },
+    COMMENT: (state, payload) => {
+      if (payload.reload) {
+        state.commentList = payload.data;
+      } else {
+        state.commentList = state.commentList.concat(payload.data);
+      }
     }
   },
   actions: {
@@ -29,6 +36,19 @@ const product = {
         throw err;
       })
     },
+    COMMENT: ({ commit }, params) => new Promise((resolve, reject) => {
+      getComments(params).then((res) => {
+        const data = {
+          data: res.result.comments,
+          reload: params.reload
+        };
+        commit('COMMENT', data);
+        resolve(res);
+      }).catch((err) => {
+        console.log(err);
+        reject(err);
+      })
+    }),
     FETCH: async ({ commit }, productId) => {
       try {
         const [ broadcastList, questionList] = await Promise.all([

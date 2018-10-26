@@ -1,5 +1,6 @@
 <template>
   <div class="com-table">
+    <slot></slot>
     <table class="com-table-box">
       <thead>
         <tr>
@@ -12,7 +13,6 @@
         </tr>
       </thead>
       <tbody>
-        <slot></slot>
         <tr v-for="row in list">
           <td v-for="val in headers" v-if="row[val.prop]">{{row[val.prop].toString()}}</td>
         </tr>
