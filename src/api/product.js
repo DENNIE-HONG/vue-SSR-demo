@@ -71,13 +71,6 @@ export const getSpecification = (productId = required()) => {
  * @param {Object} params，参数
  */
 export const getComments = (params) => {
-  // const sendData = {
-  //   sorttype: params.srottype || 5,
-  //   sku: params.productId || '',
-  //   page: params.page || 1,
-  //   score: params.score || 0,
-  //   pagesize: params.pageSize || 10
-  // };
   const q = querystring.encode(params);
   return new Promise((resolve, reject) => {
     jsonp(`${GET_COMMENT_URL}?${q}`, { timeout: 10000 }, (err, res) => {
