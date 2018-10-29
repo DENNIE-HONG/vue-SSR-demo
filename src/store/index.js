@@ -1,28 +1,35 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import actions from './actions';
+import actions from './actions';
 import home from './modules/home';
 import product from './modules/product';
+import question from './modules/question';
 Vue.use(Vuex);
-
+import defaultAvatar from 'assets/img/user.png';
 export function createStore () {
   return new Vuex.Store({
     state: {
-      items: ''
+      avatar: defaultAvatar,
+      name: 'vueSSR游客',
+      isLogin: false
     },
     modules: {
       home,
-      product
+      product,
+      question
     },
     mutations: {
-      setItem (state, res) {
-        state.items = res;
+      USER (state, data) {
+        Object.assign(state, data);
+      },
+      SIGN_OUT (state) {
+        state.name = 'vueSSR游客';
+        state.isLogin = false;
+      },
+      SIGN_IN (state) {
+        state.isLogin = true;
       }
     },
-    actions: {
-      setItem ({ commit }, id) {
-        commit('setItem');
-      }
-    }
+    actions
   })
 }

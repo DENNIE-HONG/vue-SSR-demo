@@ -32,8 +32,7 @@
  * @example
  * <load-more url="xxx" success="function" params="{}" />
 */
-// import jsonp from 'jsonp';
-// import querystring from 'querystring';
+
 import { debounce } from 'throttle-debounce';
 import scrollBottom from 'utils/scroll-bottom.js';
 const READY = 1; // 准备

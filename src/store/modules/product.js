@@ -1,4 +1,5 @@
 import { getQuestion, getGuess, getComments } from 'api/product';
+const isServer = process.env.VUE_ENV === 'server';
 const product = {
   namespaced: true,
   state: {
@@ -55,11 +56,17 @@ const product = {
           getGuess(productId),
           getQuestion(productId)
         ]);
-        let jsonpStr = questionList.data.substring(17, questionList.data.length - 13);
-        jsonpStr = JSON.parse(jsonpStr);
-        commit('GUESS', broadcastList.data.data);
+        let jsonpStr;
+        if (isServer) {
+          jsonpStr = questionList.data.substring(17, questionList.data.length - 13);
+          jsonpStr = JSON.parse(jsonpStr);
+        } else {
+          jsonpStr = questionList;
+        }
+        commit('GUESS', isServer ? broadcastList.data.data : broadcastList.data);
         commit('QUESTION', jsonpStr.result.questionList);
       } catch(err) {
+        console.log(err);
         throw err;
       }
     }

@@ -1,36 +1,30 @@
-import { getQuestion } from 'api/product';
+/**
+ * 用户数据相关接口api
+ * 涉及到cookie，建议异步获取
+ * @author luyanhong 2018-10-29
+*/
+import { getUser, signOut, postLogin } from 'api/user';
 export default {
-  // ensure data for rendering given list type
-  FETCH_LIST_DATA: ({ commit, dispatch , state }, { type }) => {
-    commit('SET_ACTIVE_TYPE', { type });
-    return getQuestion(type)
-      .then((ids) => commit('SET_LIST', { type, ids }))
-      .then(() => dispatch('ENSURE_ACTIVE_ITEMS'))
-  },
-
-  // ensure all active items are fetched
-  ENSURE_ACTIVE_ITEMS: ({ dispatch, getters }) => dispatch('FETCH_ITEMS', {
-    ids: getters.activeIds
-  }),
-
-  FETCH_ITEMS: ({ commit, state }, { ids }) => {
-    // on the client, the store itself serves as a cache.
-    // only fetch items that we do not already have, or has expired (3 minutes)
-    const now = Date.now()
-    ids = ids.filter((id) => {
-      const item = state.items[id]
-      if (!item) {
-        return true
-      }
-      if (now - item.__lastUpdated > 1000 * 60 * 3) {
-        return true
-      }
-      return false
+  USER: ({ commit }) => {
+    getUser().then((res) => {
+      commit('USER', res.data);
     })
-    if (ids.length) {
-      // return fetchItems(ids).then((items) => commit('SET_ITEMS', { items }))
-    }
-    return Promise.resolve()
-  }
+  },
+  SIGN_OUT: ({ commit }) => new Promise((resolve, reject) => {
+    signOut().then((res) => {
+      commit('SIGN_OUT');
+      resolve(res);
+    }).catch((err) => {
+      reject(err);
+    });
+  }),
+  SIGN_IN: ({ commit }, params) => new Promise((resolve, reject) => {
+    postLogin(params).then((res) => {
+      commit('SIGN_IN');
+      resolve(res);
+    }).catch((err) => {
+      reject(err);
+    })
+  })
 
 }

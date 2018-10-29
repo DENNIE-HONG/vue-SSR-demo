@@ -18,6 +18,8 @@ export default {
     padding-right: rem(10);
   }
   a {
+    display: block;
+    width: 100%;
     color: currentColor;
   }
   &:last-child {

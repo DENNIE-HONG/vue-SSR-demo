@@ -125,10 +125,6 @@ export default {
   asyncData ({ store, route }) {
     return store.dispatch('product/FETCH', route.params.productId);
   },
-  created () {
-    // this.fetchGuess();
-    // this.fetchQuestion();
-  },
   methods: {
     /**
      * 评论切换是否查看更多

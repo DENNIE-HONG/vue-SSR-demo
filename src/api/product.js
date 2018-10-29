@@ -1,4 +1,4 @@
-import jsonp from 'jsonp';
+import Vue from 'vue';
 import querystring from 'querystring';
 import request from '../plugins/axios';
 const GET_GUESS_URL = 'https://wqcoss.jd.com/mcoss/reclike/getrecinfo';
@@ -8,10 +8,10 @@ const GET_COMMENT_URL = 'https://wq.jd.com/commodity/comment/getcommentlist';
 const required = () => {
   throw Error('missing parameter！');
 }
-// const isServer = process.env.VUE_ENV === 'server';
+const isServer = process.env.VUE_ENV === 'server';
 /**
  * 获取问题列表接口
- * SSR直出
+ * SSR直出or异步
  * @param {String} productId
 */
 export const getQuestion = (productId = required()) => {
@@ -20,24 +20,13 @@ export const getQuestion = (productId = required()) => {
     callback: 'askAnswerCBA'
   };
   const q = querystring.encode(params);
-  return request.get(`${GET_QUESTION_URL}?${q}`);
-  // return request({
-  //   method: 'get',
-  //   url: GET_QUESTION_URL,
-  //   params,
-  //   responseType: 'text'
-  // });
-  // return new Promise((resolve, reject) => {
-  //   jsonp(`${GET_QUESTION_URL}?${q}`, { timeout: 10000 }, (err, res) => {
-  //     if (err) {
-  //       reject('网络不给力，请稍后再试');
-  //     }
-  //     resolve(res);
-  //   })
-  // });
+  if (isServer) {
+    return request.get(`${GET_QUESTION_URL}?${q}`);
+  }
+  return Vue.jsonp(GET_QUESTION_URL, params);
 }
 /***
- * 猜你喜欢接口，SSR直出
+ * 猜你喜欢接口，SSR直出or异步
  * @param {String} productId, 商品id
  */
 export const getGuess = (productId = required()) => {
@@ -46,7 +35,18 @@ export const getGuess = (productId = required()) => {
     pc: 30
   };
   const q = querystring.encode(params);
-  return request.get(`${GET_GUESS_URL}?${q}`);
+  if (isServer) {
+    return request.get(`${GET_GUESS_URL}?${q}`);
+  }
+  return Vue.jsonp(GET_GUESS_URL, params);
+  // return new Promise((resolve, reject) => {
+  //   Vue.jsonp(GET_GUESS_URL, params).then((json) => {
+  //     json.data = json;
+  //     resolve(json);
+  //   }).catch((err) => {
+  //     reject(err);
+  //   })
+  // })
 }
 /**
  * 参数规格接口，异步
@@ -56,28 +56,12 @@ export const getSpecification = (productId = required()) => {
   const params = {
     skuid: productId
   };
-  const q = querystring.encode(params);
-  return new Promise((resolve, reject) => {
-    jsonp(`${GET_SPECIFICATION_URL}?${q}`, { timeout: 10000 }, (err, res) => {
-      if (err) {
-        reject('网络不给力，请稍后再试');
-      }
-      resolve(res);
-    })
-  });
+  return Vue.jsonp(GET_SPECIFICATION_URL, params);
 }
 /**
  * 获取评论数据，异步
  * @param {Object} params，参数
  */
-export const getComments = (params) => {
-  const q = querystring.encode(params);
-  return new Promise((resolve, reject) => {
-    jsonp(`${GET_COMMENT_URL}?${q}`, { timeout: 10000 }, (err, res) => {
-      if (err) {
-        reject('网络不给力');
-      }
-      resolve(res);
-    })
-  })
-}
+export const getComments = (params) => Vue.jsonp(GET_COMMENT_URL, params)
+
+

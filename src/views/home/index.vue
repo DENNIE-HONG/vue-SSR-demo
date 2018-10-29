@@ -29,6 +29,19 @@ export default {
     ProductList,
     LoadMore
   },
+  metaInfo: {
+    title: 'My Vue Home',
+    meta: [
+      {
+        'property': 'keywords',
+        'content': 'vue练习首页'
+      },
+      {
+        'property': 'description',
+        'content': 'vue练习首页'
+      }
+    ]
+  },
   data () {
     return {
       url: 'home/FETCH',

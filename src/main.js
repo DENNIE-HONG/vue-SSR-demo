@@ -7,6 +7,8 @@ import App from './App.vue';
 import { sync } from 'vuex-router-sync';
 import VueLazyload from 'vue-lazyload';
 import VueTouch from 'vue-touch-hotfix';
+import Meta from 'vue-meta';
+import VueJsonp from 'vue-jsonp';
 // 引入插件
 import createRouter from './plugins/router';
 import inject from './plugins/inject.js';
@@ -16,7 +18,9 @@ import { createStore } from './store';
 import 'assets/main.scss';
 import loadingImg from 'assets/img/loading.gif';
 import errorImg from 'assets/img/error.png';
+Vue.use(Meta);
 Vue.use(inject);
+Vue.use(VueJsonp);
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: errorImg,
