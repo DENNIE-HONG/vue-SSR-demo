@@ -9,8 +9,11 @@ const home = {
   mutations: {
     FETCH: (state, data) => {
       if (data.length) {
-        state.productList = state.productList.concat(data);
+        state.productList = data;
       }
+    },
+    LOADMORE: (state, data) => {
+      state.productList = state.productList.concat(data);
     }
   },
   actions: {
@@ -18,6 +21,16 @@ const home = {
       getRecommend(sendData).then((res) => {
         const results = res.data.data;
         commit('FETCH', results);
+        resolve(results);
+      }).catch((error) => {
+        console.error(error);
+        reject(error);
+      })
+    }),
+    LOADMORE: ({ commit }, sendData) => new Promise((resolve, reject) => {
+      getRecommend(sendData).then((res) => {
+        const results = res.data.data;
+        commit('LOADMORE', results);
         resolve(results);
       }).catch((error) => {
         console.error(error);

@@ -44,7 +44,7 @@ export default {
   },
   data () {
     return {
-      url: 'home/FETCH',
+      url: 'home/LOADMORE',
       sendData: {
         page: 1,
         pageSize: 22

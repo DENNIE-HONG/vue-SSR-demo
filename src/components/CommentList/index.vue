@@ -114,8 +114,7 @@ export default {
         sku: this.productId,
         page: 1,
         score: 0,
-        pagesize: PAGE_SIZE,
-        reload: false
+        pagesize: PAGE_SIZE
       },
       summary: '',
       type: '',
@@ -150,7 +149,6 @@ export default {
         this.$refs.loadmore.fail(res.errmsg);
         return;
       }
-      this.sendData.reload = false;
       const { comments } = res.result;
       if (comments.length) {
         this.FirstLoadEmpty = false;
@@ -184,7 +182,6 @@ export default {
     },
     // 重置数据并重载
     reload () {
-      this.sendData.reload = true;
       this.sendData.page = 1;
       this.$refs.loadmore.loadmore();
     },

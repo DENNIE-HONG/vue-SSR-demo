@@ -14,7 +14,8 @@ export const getQuestion = (productId, page = 1) => {
   const params = {
     pageSize: 10,
     page,
-    productId
+    productId,
+    callback: 'getFaqsCallback'
   };
   const q = querystring.encode(params);
   if (isServer) {

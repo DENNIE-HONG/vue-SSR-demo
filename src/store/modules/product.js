@@ -2,10 +2,12 @@ import { getQuestion, getGuess, getComments } from 'api/product';
 const isServer = process.env.VUE_ENV === 'server';
 const product = {
   namespaced: true,
-  state: {
-    broadcastList: [],
-    questionList: [],
-    commentList: []
+  state () {
+    return {
+      broadcastList: [],
+      questionList: [],
+      commentList: []
+    }
   },
   mutations: {
     GUESS: (state, data) => {
@@ -14,12 +16,11 @@ const product = {
     QUESTION: (state, data) => {
       state.questionList = data;
     },
-    COMMENT: (state, payload) => {
-      if (payload.reload) {
-        state.commentList = payload.data;
-      } else {
-        state.commentList = state.commentList.concat(payload.data);
-      }
+    COMMENT: (state, data) => {
+      state.commentList = data;
+    },
+    COMMENT_LOADMORE: (state, data) => {
+      state.commentList = state.commentList.concat(data);
     }
   },
   actions: {
@@ -39,11 +40,11 @@ const product = {
     },
     COMMENT: ({ commit }, params) => new Promise((resolve, reject) => {
       getComments(params).then((res) => {
-        const data = {
-          data: res.result.comments,
-          reload: params.reload
-        };
-        commit('COMMENT', data);
+        if (params.page === 1) {
+          commit('COMMENT', res.result.comments);
+        } else {
+          commit('COMMENT_LOADMORE', res.result.comments);
+        }
         resolve(res);
       }).catch((err) => {
         console.log(err);

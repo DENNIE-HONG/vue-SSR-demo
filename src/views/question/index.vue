@@ -1,13 +1,17 @@
 <template>
   <div class="question">
     <header-banner>问答专区</header-banner>
-    <router-link
-      :to="'/product/' + productId"
-      class="title question-link">关于“ <span class="question-link-txt">{{questionTitle}}</span>” 的{{total}}个问题
-      <span class="pull-right"><i class="iconfont icon-right"></i></span>
-    </router-link>
-    <section class="question-box">
+    <section
+      v-if="questionList.length"
+      class="question-box">
       <dl class="question-list">
+        <dt>
+          <router-link
+            :to="'/product/' + productId"
+            class="title question-link">关于“ <span class="question-link-txt">{{questionTitle}}</span>” 的{{total}}个问题
+            <span class="pull-right"><i class="iconfont icon-right"></i></span>
+          </router-link>
+        </dt>
         <dd
           v-for="item in questionList"
           :key="item.id"
@@ -27,6 +31,7 @@
         </dd>
       </dl>
       <load-more
+        v-if="questionList.length >= sentData.pageSize"
         ref="loadmore"
         url="question/FETCH"
         :params="sentData"
@@ -60,10 +65,12 @@ export default {
   asyncData ({ store, route }) {
     return store.dispatch('question/FETCH', { page: 1, productId: route.params.productId });
   },
+  mounted () {
+    this.sentData.page += 1;
+  },
   data () {
     return {
       productId: this.$route.params.productId,
-      total: 0,
       sentData: {
         pageSize: 10,
         page: 1,
@@ -77,18 +84,16 @@ export default {
     },
     questionTitle () {
       return this.$store.state.question.questionTitle;
+    },
+    total () {
+      return this.$store.state.question.total;
     }
   },
   methods: {
     fetchData (res) {
       if (res.resultCode === '0') {
         const { questionList } = res.result;
-        if (!this.questionTitle) {
-          this.total = res.result.totalItem;
-          // this.questionTitle = res.result.skuInfo.fullName;
-        }
         if (questionList.length) {
-          // this.questionList = this.questionList.concat(questionList);
           if (questionList.length < this.sentData.pageSize) {
             if (this.sentData.page === 1) {
               this.$refs.loadmore.hide();
