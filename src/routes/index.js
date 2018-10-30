@@ -9,6 +9,7 @@ import My from 'views/my/index.vue';
 import Login from 'views/login/index.vue';
 import Question from 'views/question/index.vue';
 import QuestionDetail from 'views/question-detail/index.vue';
+import Search from 'views/search/index.vue';
 // const Home = () => import('views/home/index.vue');
 // const NotFound = () => import('views/404/index.vue');
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/question/:productId', component: Question },
   { path: '/question/:productId/detail/:id', component: QuestionDetail },
+  { path: '/search', component: Search },
   { path: '*', component: NotFound }
 ];
 export default routes;

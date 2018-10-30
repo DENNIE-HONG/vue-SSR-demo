@@ -12,7 +12,6 @@ export const getRecommend = (data) => {
   return axios({
     method: 'get',
     url: '/jdapi/mcoss/reclike/getrecinfo',
-    params,
-    responseType: 'json'
+    params
   });
 }
