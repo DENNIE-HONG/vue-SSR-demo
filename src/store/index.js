@@ -4,6 +4,7 @@ import actions from './actions';
 import home from './modules/home';
 import product from './modules/product';
 import question from './modules/question';
+import answer from './modules/answer';
 Vue.use(Vuex);
 import defaultAvatar from 'assets/img/user.png';
 export function createStore () {
@@ -16,7 +17,8 @@ export function createStore () {
     modules: {
       home,
       product,
-      question
+      question,
+      answer
     },
     mutations: {
       USER (state, data) {
