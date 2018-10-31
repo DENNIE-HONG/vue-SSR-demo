@@ -4,7 +4,7 @@
   "description": "vue test",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "nodemon server.js",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js",
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js",
     "build:sit-preview": "npm_config_report=true webpack --env.production=false --config build/webpack.prod.js",
@@ -26,6 +26,7 @@
     "axios": "^0.18.0",
     "jsonwebtoken": "^8.3.0",
     "koa": "^2.5.3",
+    "koa-cookie": "^1.0.0",
     "koa-favicon": "^2.0.1",
     "koa-router": "^7.4.0",
     "koa-server-http-proxy": "^0.1.0",

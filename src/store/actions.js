@@ -5,8 +5,8 @@
 */
 import { getUser, signOut, postLogin } from 'api/user';
 export default {
-  USER: ({ commit }) => {
-    getUser().then((res) => {
+  USER: ({ commit }, userInfo) => {
+    getUser(userInfo).then((res) => {
       commit('USER', res.data);
     })
   },

@@ -28,9 +28,9 @@ Vue.use(VueLazyload, {
   attempt: 1
 });
 Vue.use(VueTouch, { name: 'v-touch' });
-export function createApp () {
+export function createApp (token) {
   // 创建 router 和 store 实例
-  const router = createRouter();
+  const router = createRouter(token);
   const store = createStore();
   // 同步路由状态(route state)到 store
   sync(store, router);

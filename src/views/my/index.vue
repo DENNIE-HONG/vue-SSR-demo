@@ -50,15 +50,8 @@ export default {
       return this.$store.state.isLogin
     }
   },
-  created () {
-    // getUser().then((res) => {
-    //   this.avatar = res.data.avatar;
-    //   this.name = res.data.name;
-    //   this.isLogin = res.data.isLogin;
-    // });
-  },
-  mounted () {
-    this.$store.dispatch('USER');
+  asyncData ({ store }) {
+    return store.dispatch('USER');
   },
   methods: {
     signOut () {

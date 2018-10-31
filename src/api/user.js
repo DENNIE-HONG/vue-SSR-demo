@@ -37,8 +37,15 @@ export function postLogin (params = required()) {
 }
 
 // 用户信息
-export function getUser () {
-  const token = cookies.get(vueToken);
+export function getUser (cookies) {
+  let token;
+  if (cookies) {
+    // 服务端传递
+    token = cookies[vueToken];
+  } else {
+    // 浏览器cookie获取
+    token = cookies.get(vueToken);
+  }
   let deCoded;
   if (token) {
     jwt.verify(token, 'secret', function (err, decoded) {
@@ -50,7 +57,9 @@ export function getUser () {
   }
   let data = {};
   if (deCoded && deCoded[userName]) {
-    const name = localStorage.getItem(userName);
+    // const name = localStorage.getItem(userName);
+    const name = deCoded[userName];
+    console.log(name);
     Object.assign(data, {
       name,
       isLogin: true

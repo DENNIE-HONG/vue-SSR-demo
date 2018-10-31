@@ -10,6 +10,7 @@ const serve = require('koa-static');
 const proxy = require('koa-server-http-proxy');
 const { createBundleRenderer } = require('vue-server-renderer');
 const LRU = require('lru-cache');
+const cookie = require('koa-cookie');
 
 const favicon = require('koa-favicon');
 const PORT = 4444;
@@ -67,7 +68,8 @@ Object.keys(proxyTable).forEach((context) => {
 
 const renderData = (ctx, renderer) => {
   const context = {
-    url: ctx.url
+    url: ctx.url,
+    cookie: ctx.cookie
   };
   if (!isProd) {
     readyPromise.then( () => {
@@ -90,7 +92,7 @@ const renderData = (ctx, renderer) => {
     });
   });
 };
-
+router.use(cookie.default());
 router.get('*', async (ctx, next) => {
   const s = Date.now();
   let html,status;

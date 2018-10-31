@@ -10,6 +10,7 @@ import Login from 'views/login/index.vue';
 import Question from 'views/question/index.vue';
 import QuestionDetail from 'views/question-detail/index.vue';
 import Search from 'views/search/index.vue';
+import Setting from 'views/setting/index.vue';
 // const Home = () => import('views/home/index.vue');
 // const NotFound = () => import('views/404/index.vue');
 const routes = [
@@ -20,6 +21,10 @@ const routes = [
   { path: '/question/:productId', component: Question },
   { path: '/question/:productId/detail/:id', component: QuestionDetail },
   { path: '/search', component: Search },
+  { path: '/setting',
+    component: Setting,
+    meta: { requiresAuth: true }
+  },
   { path: '*', component: NotFound }
 ];
 export default routes;

@@ -4,6 +4,9 @@
  */
 import Vue from 'vue';
 import { createApp } from './main';
+import Cookie from 'universal-cookie';
+const cookies = new Cookie();
+const token = 'vue_token';
 // a global mixin that calls `asyncData` when a route component's params change
 Vue.mixin({
   beforeRouteUpdate (to, from, next) {
@@ -19,7 +22,7 @@ Vue.mixin({
   }
 });
 
-const { app, router, store } = createApp();
+const { app, router, store } = createApp(cookies.get(token));
 // prime the store with server-initialized state.
 // the state is determined during SSR and inlined in the page markup.
 if (window.__INITIAL_STATE__) {
