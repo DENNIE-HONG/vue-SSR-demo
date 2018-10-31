@@ -31,8 +31,10 @@ const WEBPACK_PROD_CONFIG = {
 // axios 默认配置
 const AXIOS_DEFAULT_CONFIG = {
   timeout: 10000,
-  maxContentLength: 200000,
-  baseURL: 'http://127.0.0.1:4444'
+  baseURL: 'http://127.0.0.1:4444',
+  header: {
+    Accept: 'application/json'
+  }
 };
 module.exports = {
   WEBPACK_COMMON_CONFIG,

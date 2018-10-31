@@ -134,7 +134,6 @@ export default {
       this.destroy();
     },
     linkToSearch (keyword) {
-      console.log(this.$router);
       this.$router.push({ path: `/search?keyword=${keyword}` });
       this.destroy();
     }

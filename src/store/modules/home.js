@@ -8,9 +8,7 @@ const home = {
   },
   mutations: {
     FETCH: (state, data) => {
-      if (data.length) {
-        state.productList = data;
-      }
+      state.productList = data;
     },
     LOADMORE: (state, data) => {
       state.productList = state.productList.concat(data);

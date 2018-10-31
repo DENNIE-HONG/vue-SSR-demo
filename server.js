@@ -10,6 +10,7 @@ const serve = require('koa-static');
 const proxy = require('koa-server-http-proxy');
 const { createBundleRenderer } = require('vue-server-renderer');
 const LRU = require('lru-cache');
+
 const favicon = require('koa-favicon');
 const PORT = 4444;
 const isProd = process.env.NODE_ENV === 'production';

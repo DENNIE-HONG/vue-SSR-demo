@@ -33,9 +33,9 @@
         <i class="iconfont icon-down"></i>
       </li>
     </nav>
-    <product-list :productList="searchList" />
+    <product-list :productList="searchList" imgPrefix="//img11.360buyimg.com/n7/s360x360_"/>
     <empty-list v-if="firstLoadEmpty" text="暂时搜索不到该商品"/>
-    <load-more v-else :url="url" :success="loadSuccess" :params="sendData" jsonp ref="loadmore"/>
+    <load-more v-if="keyword" :url="url" :success="loadSuccess" :params="sendData" ref="loadmore" async/>
   </div>
 </template>
 <script>
@@ -69,6 +69,9 @@ export default {
   computed: {
     keyword () {
       return this.$route.query.keyword;
+    },
+    searchList () {
+      return this.$store.state.search.searchList;
     }
   },
   watch: {
@@ -87,14 +90,13 @@ export default {
   },
   data () {
     return {
-      url: 'https://so.m.jd.com/ware/search._m2wq_list',
-      searchList: [],
+      url: 'search/FETCH',
       sendData: {
         keyword: this.$route.query.keyword,
         page: 1,
-        fdesc: '北京',
         sort_type: '',
-        filt_type: ''
+        filt_type: '',
+        pageSize: 10
       },
       firstLoadEmpty: false,
       searchType: 1,
@@ -107,23 +109,18 @@ export default {
         this.$refs.loadmore.fail(res.errmsg);
         return;
       }
-      if (res.data.searchm.Paragraph.length) {
-        for (const item of res.data.searchm.Paragraph) {
-          item.wareId = item.wareid;
-          item.imageurl = `//img11.360buyimg.com/n7/s360x360_${item.Content.imageurl}`;
-          item.wname = item.Content.warename;
-          item.jdPrice = item.dredisprice;
-          item.itemType = item.venderType;
+      if (res.data.searchm.Paragraph.length < this.sendData.pageSize) {
+        if (this.sendData.page === 1) {
+          this.$refs.loadmore.hide();
+          !res.data.searchm.Paragraph.length && (this.firstLoadEmpty = true);
+        } else {
+          this.$refs.loadmore.toEnd();
         }
-        this.searchList = this.searchList.concat(res.data.searchm.Paragraph);
-        this.sendData.page += 1;
       } else {
-        this.$refs.loadmore.toEnd();
-        this.sendData.page === 1 && (this.firstLoadEmpty = true);
+        this.sendData.page += 1;
       }
     },
     reload () {
-      this.searchList = [];
       this.sendData.page = 1;
       this.firstLoadEmpty = false;
     },

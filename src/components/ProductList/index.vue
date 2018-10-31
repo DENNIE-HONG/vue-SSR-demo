@@ -9,7 +9,7 @@
         class="product-list-item">
         <router-link
           :to="'product/' + list.sku">
-          <div class="product-list-pic"><img v-lazy="'//img14.360buyimg.com/n7/' + list.img"/></div>
+          <div class="product-list-pic"><img v-lazy="imgPrefix + list.img"/></div>
           <h4 class="product-list-title">{{list.t}}</h4>
           <div class="product-list-info">
             <span>￥{{list.jp / 100}}</span>
@@ -33,6 +33,10 @@ export default {
     productList: {
       default: [],
       type: Array
+    },
+    imgPrefix: {
+      default: '//img14.360buyimg.com/n7/',
+      type: String
     }
   }
 }
