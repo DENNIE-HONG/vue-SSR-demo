@@ -1,20 +1,26 @@
 /**
  * 用户数据相关接口api
- * @author luyanhong 2018-08-03
+ * token 默认存储3天
+ * 一般用token判断是否登录，退出则清理token
+ * 暂时localStore 存用户信息，因为没有数据库
+ * @author luyanhong 2018-11-01
 */
 import Cookie from 'universal-cookie';
 import jwt from 'jsonwebtoken';
-const cookies = new Cookie();
+const clientCookies = new Cookie();
 const required = () => {
   throw Error('missing parameter');
 }
 const userName = 'name';
-// const defaultName = 'vue宝宝';
+const avatarName = 'avatar';
 const vueToken = 'vue_token';
 // import defaultAvatar from 'assets/img/user.png';
-// 登入
+/**
+ * 登入接口，异步
+ * @param {Object} 请求参数
+*/
 export function postLogin (params = required()) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const { name } = params;
     if (!name) {
       reject({
@@ -22,21 +28,28 @@ export function postLogin (params = required()) {
         msg: '缺少参数name'
       });
     }
-    const token = jwt.sign({
-      name
-    }, 'secret', { expiresIn: '3 days' });
-    cookies.set(vueToken, token, {
-      path: '/'
-    });
-    localStorage.setItem(userName, name);
-    resolve({
-      code: 200,
-      msg: ''
-    });
+    const { data } = await getUser();
+    if (data.name === name) {
+      resolve({
+        code: 200,
+        msg: ''
+      });
+    } else {
+      reject({
+        code: 0,
+        msg: '用户名不对哦'
+      });
+    }
+    // const token = jwt.sign({
+    //   name
+    // }, 'secret', { expiresIn: '3 days' });
+    // clientCookies.set(vueToken, token, {
+    //   path: '/'
+    // });
   })
 }
 
-// 用户信息
+// 获取用户信息,支持异步orSSR
 export function getUser (cookies) {
   let token;
   if (cookies) {
@@ -44,7 +57,7 @@ export function getUser (cookies) {
     token = cookies[vueToken];
   } else {
     // 浏览器cookie获取
-    token = cookies.get(vueToken);
+    token = clientCookies.get(vueToken);
   }
   let deCoded;
   if (token) {
@@ -57,11 +70,12 @@ export function getUser (cookies) {
   }
   let data = {};
   if (deCoded && deCoded[userName]) {
-    // const name = localStorage.getItem(userName);
+    // const avatar = localStorage.getItem(avatarName) || '';
+    const avatar = deCoded[avatar];
     const name = deCoded[userName];
-    console.log(name);
     Object.assign(data, {
       name,
+      avatar,
       isLogin: true
     });
   }
@@ -72,12 +86,12 @@ export function getUser (cookies) {
   });
 }
 
-// 退出
+// 退出，异步
 export function signOut () {
-  const token = cookies.get(vueToken);
+  const token = clientCookies.get(vueToken);
   return new Promise((resolve, reject) => {
     if (token) {
-      cookies.remove(vueToken);
+      clientCookies.remove(vueToken);
       resolve({
         code: 200,
         msg: ''
@@ -90,3 +104,43 @@ export function signOut () {
     }
   });
 }
+
+/**
+ * 修改昵称、头像
+ * 只支持异步
+ * @param {Object}
+ */
+
+export function postUser ({ name, avatar }) {
+  return new Promise(async (resolve, reject) => {
+    if (!(name && avatar)) {
+      reject({
+        code: 1,
+        msg: '缺少参数name'
+      });
+    }
+    // 存储用户数据
+    name && localStorage.setItem(userName, name);
+    avatar && localStorage.setItem(avatarName, avatar);
+    // 修改用户名，重新存储token
+    const { data } = await getUser();
+    if(name) {
+      const token = jwt.sign({
+        name: name || data.name,
+        avatar: avatar || data.avatar
+      }, 'secret', { expiresIn: '3 days' });
+      clientCookies.set(vueToken, token, {
+        path: '/'
+      });
+    }
+    resolve({
+      code: 200,
+      msg: ''
+    })
+  })
+}
+/**
+ * 注册
+ * 异步
+*/
+

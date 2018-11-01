@@ -24,7 +24,12 @@ export function createStore () {
     },
     mutations: {
       USER (state, data) {
-        Object.assign(state, data);
+        const { name, avatar, isLogin } = data;
+        if (isLogin) {
+          name && (state.name = name);
+          avatar && (state.avatar = avatar);
+          state.isLogin = true;
+        }
       },
       SIGN_OUT (state) {
         state.name = 'vueSSR游客';

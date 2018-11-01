@@ -80,8 +80,7 @@ export default {
     border-radius: rem(8);
   }
   &-content {
-    min-height: rem(100);
-    padding: rem(30) rem(50);
+    padding: rem(50) rem(50) rem(40);
     line-height: rem(44);
     @include wordbreak;
     text-align: center;

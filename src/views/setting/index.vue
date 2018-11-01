@@ -5,7 +5,12 @@
       <div class="info-item">
         <span>vue头像</span>
         <div class="info-item-right">
-          <upload-picture v-model="avatar" class="info-item-pic"></upload-picture>
+          <upload-picture
+            :imgUrl="avatar"
+            class="info-item-pic"
+            @change="changeAvatar"
+            :name="name">
+          </upload-picture>
         </div>
       </div>
       <div class="info-item">
@@ -19,7 +24,9 @@
     <section class="setting-info">
       <div class="info-item">
         <span>性别</span>
-        <div class="info-item-right" @click="handleGender">
+        <div
+          class="info-item-right"
+          @click="handleGender">
           {{sex}}
           <i class="iconfont icon-right"></i>
         </div>
@@ -41,9 +48,17 @@
       <div class="info-item">
         <span>兴趣</span>
         <div class="info-item-right">
-          <base-select v-model="hobby" :style="{textAlign: 'right', height: '1.2rem'}">
-            <base-option value="1" label="吴亦凡"></base-option>
-            <base-option value="2" label="黄景瑜"></base-option>
+          <base-select
+            v-model="hobby"
+            :style="{textAlign: 'right', height: '1.2rem'}">
+            <base-option
+              value="1"
+              label="吴亦凡">
+            </base-option>
+            <base-option
+              value="2"
+              label="黄景瑜">
+            </base-option>
           </base-select>
           <i class="iconfont icon-right"></i>
         </div>
@@ -51,22 +66,40 @@
       <div class="info-item">
         <span>标签</span>
         <div class="info-item-right">
-          <base-select v-model="topic" :style="{textAlign: 'right'}" multiple>
-            <base-option value="3" label="沉迷学习"></base-option>
-            <base-option value="4" label="不可自拔"></base-option>
-            <base-option value="5" label="小点声"></base-option>
-            <base-option value="6" label="日渐肥硕"></base-option>
+          <base-select
+            v-model="topic"
+            :style="{textAlign: 'right'}" multiple>
+            <base-option
+              value="3"
+              label="沉迷学习">
+            </base-option>
+            <base-option
+              value="4"
+              label="不可自拔">
+            </base-option>
+            <base-option
+              value="5"
+              label="小点声">
+            </base-option>
+            <base-option
+              value="6"
+              label="日渐肥硕">
+            </base-option>
           </base-select>
           <i class="iconfont icon-right"></i>
         </div>
       </div>
     </section>
+    <div
+      class="btn-primary btn-large"
+      @click="submit">提交修改
+    </div>
   </div>
 </template>
 <script>
 /**
  * 设置个人资料页
- * @author luyanhong 2018-08-05
+ * @author luyanhong 2018-11-01
 */
 
 import UploadPicture from 'coms/UploadPicture/index.vue';
@@ -96,7 +129,13 @@ export default {
       isHideGender: true,
       checked: true,
       hobby: '1',
-      topic: ['3']
+      topic: ['3'],
+      isChange: false,
+      sentData: {
+        name: '',
+        avatar: ''
+      },
+      isLoading: false
     }
   },
   computed: {
@@ -126,12 +165,36 @@ export default {
   methods: {
     handleGender () {
       this.isHideGender = false;
+      this.isChange = true;
     },
     closeGender (options) {
       this.isHideGender = options.isHide;
+      this.isChange = true;
     },
-    imgUrl (url) {
+    changeAvatar (url) {
       console.log(url);
+      this.isChange = true;
+    },
+    submit () {
+      this.$confirm('确定提交吗？').then(() => {
+        if (!this.isChange) {
+          this.$message({
+            type: 'warning',
+            message: '没有任何修改哦'
+          });
+          return;
+        }
+        if (this.isLoading) {
+          return;
+        }
+        this.isLoading = true;
+      }).catch(() => {});
+    },
+    failTip (message) {
+      this.$message({
+        type: 'error',
+        message
+      });
     }
   }
 }
@@ -166,6 +229,9 @@ export default {
         margin: rem(20) rem(20) rem(20) 0;
       }
     }
+  }
+  .btn-primary {
+    margin: rem(60) rem(40);
   }
 }
 </style>

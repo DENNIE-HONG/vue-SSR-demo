@@ -2,8 +2,9 @@
   <div class="com-upload">
     <div class="com-upload-btn">
       <img
-        v-if="imgUrl"
-        :src="imgUrl"
+        v-if="image"
+        :src="image"
+        :alt="name"
         class="com-upload-pic"/>
       <input
         type="file"
@@ -37,6 +38,15 @@ export default {
     maxSize: {
       default: 5,
       type: Number
+    },
+    name: {
+      default: 'vueSSR宝宝',
+      type: String
+    }
+  },
+  data () {
+    return {
+      image: this.imgUrl
     }
   },
   methods: {
@@ -50,6 +60,7 @@ export default {
       try {
         const newUrl = await this.changeToBase64(file);
         this.$emit('change', newUrl);
+        this.image = newUrl;
         this.$message({
           type: 'success',
           message: '图片上传成功'

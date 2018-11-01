@@ -19,7 +19,10 @@
 <script>
 /**
  * 输入模块
- * @author luyanhong
+ * @author luyanhong 2018-11-01
+ * @param {String}  type, 输入框类型
+ * @param {String}  value, 输入值
+ * @param {Boolean} clearable, 是否显示清楚小圆按钮
 */
 export default {
   name: 'BaseInput',

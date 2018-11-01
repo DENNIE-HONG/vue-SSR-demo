@@ -15,3 +15,12 @@
   直接在index里注册模块
 
 3、直出需要用到vue-touch, 用vue-touch-hotfix模块修复window报错
+
+4、注意有加载更多的列表模块
+  store的actions指令，首次加载和其他次加载分开。
+  路由跳转后需要将列表重置，不能再用concat
+
+5、用koa-cookie模块，将cookie带上
+  获取ctx.cookie后，传入createApp, 再注册到store里，部分需要用到用户登录信息的页面，
+  即可直接在SSR里全局获取用户信息。
+  同理，client-entry里的createApp，也需要传入cookie信息
