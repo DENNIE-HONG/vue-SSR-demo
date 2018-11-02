@@ -6,6 +6,7 @@ import product from './modules/product';
 import question from './modules/question';
 import answer from './modules/answer';
 import search from './modules/search';
+import cart from './modules/cart';
 Vue.use(Vuex);
 import defaultAvatar from 'assets/img/user.png';
 export function createStore () {
@@ -20,7 +21,8 @@ export function createStore () {
       product,
       question,
       answer,
-      search
+      search,
+      cart
     },
     mutations: {
       USER (state, data) {
@@ -37,6 +39,13 @@ export function createStore () {
       },
       SIGN_IN (state) {
         state.isLogin = true;
+      },
+      CHANGE_INFO (state, { name, avatar }) {
+        state.name = name;
+        state.avatar = avatar;
+      },
+      SIGN_UP (state, name) {
+        state.name = name;
       }
     },
     actions

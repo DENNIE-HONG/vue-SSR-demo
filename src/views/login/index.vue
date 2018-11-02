@@ -4,20 +4,33 @@
     <form class="login-content">
       <BaseInput
         placeholder="昵称"
-        v-model="name"
+        v-model.trim="name"
         class="login-input"
         maxlength="10"
         clearable
       />
       <BaseInput
         placeholder="密码"
-        v-model="password"
+        v-model.trim="password"
         class="login-input"
         maxlength="20"
         type="password"
         clearable
       />
-      <div class="btn-primary btn-large" @click="submit">登录</div>
+      <div
+        v-show="!isRegister"
+        class="btn-primary btn-large"
+        @click="submit">登录</div>
+      <div
+        v-show="isRegister"
+        class="btn-primary btn-large"
+        @click="signUp">注册</div>
+      <div v-show="!isRegister">
+        <span>没有用户名？</span>
+        <span
+          class="login-register"
+          @click="changeRegister">点击注册</span>
+      </div>
     </form>
   </div>
 </template>
@@ -44,7 +57,8 @@ export default {
       sendData: {
         name: '',
         password: ''
-      }
+      },
+      isRegister: false
     }
   },
 
@@ -87,7 +101,24 @@ export default {
         this.showError(res.msg);
       });
     },
-
+    // 注册
+    async signUp () {
+      const errMsg = this.check();
+      if (errMsg) {
+        this.showError(errMsg);
+        return;
+      }
+      try {
+        await this.$store.dispatch('SIGN_UP', this.name);
+        location.reload();
+        // this.$router.push({ path: '/my' });
+      } catch(err) {
+        this.showError(err);
+      }
+    },
+    changeRegister () {
+      this.isRegister = true;
+    },
     showError (text) {
       this.$message({
         type: 'error',
@@ -115,6 +146,10 @@ export default {
   }
   &-input {
     margin-bottom: rem(40);
+  }
+  &-register {
+    text-decoration: underline;
+    color: nth($fgreen, 1);
   }
 }
 </style>

@@ -163,6 +163,7 @@ export default {
     }
   },
   methods: {
+    // 修改性别
     handleGender () {
       this.isHideGender = false;
       this.isChange = true;
@@ -171,12 +172,13 @@ export default {
       this.isHideGender = options.isHide;
       this.isChange = true;
     },
+    // 修改头像
     changeAvatar (url) {
-      console.log(url);
+      this.sentData.avatar = url;
       this.isChange = true;
     },
     submit () {
-      this.$confirm('确定提交吗？').then(() => {
+      this.$confirm('确定提交吗？').then(async () => {
         if (!this.isChange) {
           this.$message({
             type: 'warning',
@@ -188,6 +190,17 @@ export default {
           return;
         }
         this.isLoading = true;
+        try {
+          await this.$store.dispatch('CHANGE_INFO', this.sentData);
+          this.$message({
+            type: 'success',
+            message: '修改成功！'
+          });
+        } catch (err) {
+          this.failTip(err.msg);
+        } finally {
+          this.isLoading = false;
+        }
       }).catch(() => {});
     },
     failTip (message) {

@@ -12,15 +12,18 @@ const required = () => {
   throw Error('missing parameter');
 }
 const userName = 'name';
-const avatarName = 'avatar';
 const vueToken = 'vue_token';
 // import defaultAvatar from 'assets/img/user.png';
+const saveToken = (params) => {
+  const token = jwt.sign(params, 'secret', { expiresIn: '3 days' });
+  clientCookies.set(vueToken, token);
+}
 /**
  * 登入接口，异步
  * @param {Object} 请求参数
 */
 export function postLogin (params = required()) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const { name } = params;
     if (!name) {
       reject({
@@ -28,8 +31,9 @@ export function postLogin (params = required()) {
         msg: '缺少参数name'
       });
     }
-    const { data } = await getUser();
-    if (data.name === name) {
+    const originName = localStorage.getItem(userName);
+    if (originName === name) {
+      saveToken({ name });
       resolve({
         code: 200,
         msg: ''
@@ -40,12 +44,6 @@ export function postLogin (params = required()) {
         msg: '用户名不对哦'
       });
     }
-    // const token = jwt.sign({
-    //   name
-    // }, 'secret', { expiresIn: '3 days' });
-    // clientCookies.set(vueToken, token, {
-    //   path: '/'
-    // });
   })
 }
 
@@ -70,7 +68,6 @@ export function getUser (cookies) {
   }
   let data = {};
   if (deCoded && deCoded[userName]) {
-    // const avatar = localStorage.getItem(avatarName) || '';
     const avatar = deCoded[avatar];
     const name = deCoded[userName];
     Object.assign(data, {
@@ -113,7 +110,7 @@ export function signOut () {
 
 export function postUser ({ name, avatar }) {
   return new Promise(async (resolve, reject) => {
-    if (!(name && avatar)) {
+    if (!name && !avatar) {
       reject({
         code: 1,
         msg: '缺少参数name'
@@ -121,26 +118,41 @@ export function postUser ({ name, avatar }) {
     }
     // 存储用户数据
     name && localStorage.setItem(userName, name);
-    avatar && localStorage.setItem(avatarName, avatar);
     // 修改用户名，重新存储token
     const { data } = await getUser();
-    if(name) {
-      const token = jwt.sign({
-        name: name || data.name,
-        avatar: avatar || data.avatar
-      }, 'secret', { expiresIn: '3 days' });
-      clientCookies.set(vueToken, token, {
-        path: '/'
-      });
-    }
+    const responseData = {
+      name: name || data.name,
+      avatar: avatar || data.avatar
+    };
+    saveToken({ name: responseData.name });
     resolve({
       code: 200,
+      data: responseData,
       msg: ''
     })
   })
 }
 /**
- * 注册
- * 异步
+ * 注册, 异步
+ * @param {String} name, 昵称
 */
-
+export function signUp (name = required()) {
+  return new Promise((resolve, reject) => {
+    if (!name) {
+      reject({
+        code: 1,
+        msg: '昵称不能为空'
+      });
+    }
+    const data = {
+      name
+    };
+    saveToken(data);
+    localStorage.setItem(userName, name);
+    resolve({
+      code: 200,
+      data,
+      msg: ''
+    });
+  });
+}

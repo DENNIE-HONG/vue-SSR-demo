@@ -11,6 +11,7 @@ import Question from 'views/question/index.vue';
 import QuestionDetail from 'views/question-detail/index.vue';
 import Search from 'views/search/index.vue';
 import Setting from 'views/setting/index.vue';
+import Cart from 'views/cart/index.vue';
 // const Home = () => import('views/home/index.vue');
 // const NotFound = () => import('views/404/index.vue');
 const routes = [
@@ -25,6 +26,7 @@ const routes = [
     component: Setting,
     meta: { requiresAuth: true }
   },
+  { path: '/cart', component: Cart },
   { path: '*', component: NotFound }
 ];
 export default routes;
