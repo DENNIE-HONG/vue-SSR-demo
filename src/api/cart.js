@@ -1,2 +1,2 @@
 import axios from '../plugins/axios';
-export const getCart = () => axios.get('/kaola/cart');
+export const getCart = () => axios.get('/kaola/cart/cartdata.html');

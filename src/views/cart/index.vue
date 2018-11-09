@@ -3,6 +3,7 @@
     <header-banner>购物车({{allCount}})</header-banner>
     <div class="cart-box">
       <section
+        v-if="cartList.length"
         v-for="item of cartList"
         :key="item.cartRegionId"
         class="cart-list">
@@ -12,6 +13,9 @@
           @change="changeWareHouse(arguments, item.cartRegionId)"
           @delete="handleDelete"></cart-item-group>
       </section>
+      <empty-list
+        v-if="!cartList.length"
+        text="购物车空空如也" />
     </div>
     <div class="cart-settlement">
       <base-checkbox
@@ -28,12 +32,14 @@
 import HeaderBanner from 'coms/HeaderBanner';
 import CartItemGroup from 'coms/CartItem/CartItemGroup';
 import ConfirmBox from 'coms/ConfirmBox';
+import EmptyList from 'coms/EmptyList';
 export default {
   name: 'Cart',
   components: {
     HeaderBanner,
     CartItemGroup,
-    ConfirmBox
+    ConfirmBox,
+    EmptyList
   },
   data () {
     return {
@@ -42,7 +48,7 @@ export default {
       total: 0
     }
   },
-  asyncData (store) {
+  asyncData ({ store }) {
     return store.dispatch('cart/FETCH');
   },
   computed: {
@@ -50,13 +56,13 @@ export default {
       return this.cartList.length;
     },
     cartList () {
-      return this.$store.state.cartList;
+      return this.$store.state.cart.cartList;
     },
     allCount () {
-      return this.$store.state.allCount;
+      return this.$store.state.cart.allCount;
     },
     totalObj () {
-      return this.$store.state.totalObj;
+      return this.$store.state.cart.totalObj;
     }
   },
   watch: {
