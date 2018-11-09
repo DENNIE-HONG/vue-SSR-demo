@@ -15,7 +15,7 @@
       </section>
       <empty-list
         v-if="!cartList.length"
-        text="购物车空空如也" />
+        text="购物车空空如也!" />
     </div>
     <div class="cart-settlement">
       <base-checkbox

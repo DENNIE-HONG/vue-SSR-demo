@@ -8,7 +8,6 @@ const baseConfig = require('./webpack.base.config');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WEBPACK_COMMON_CONFIG = require('../config/index.js').WEBPACK_COMMON_CONFIG;
-const isProd = process.env.NODE_ENV === 'production';
 module.exports = merge(baseConfig, {
   entry: {
     app: path.resolve(__dirname, '../src/client-entry.js')
@@ -45,6 +44,5 @@ module.exports = merge(baseConfig, {
     // 此插件在输出目录中
     // 生成 `vue-ssr-client-manifest.json`。
     new VueSSRClientPlugin()
-  ],
-  watch: !isProd
+  ]
 });

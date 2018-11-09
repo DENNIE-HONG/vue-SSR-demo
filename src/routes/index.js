@@ -12,8 +12,8 @@ import QuestionDetail from 'views/question-detail/index.vue';
 import Search from 'views/search/index.vue';
 import Setting from 'views/setting/index.vue';
 import Cart from 'views/cart/index.vue';
-// const Home = () => import('views/home/index.vue');
-// const NotFound = () => import('views/404/index.vue');
+// const Home = () => import(/* webpackChunkName:"home" */ 'views/home/index.vue');
+// const NotFound = () => import(/* webpackChunkName:"404" */ 'views/404/index.vue');
 const routes = [
   { path: '/', component: Home },
   { path: '/product/:productId', component: Product },
