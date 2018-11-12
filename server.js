@@ -12,6 +12,7 @@ const { createBundleRenderer } = require('vue-server-renderer');
 const LRU = require('lru-cache');
 const cookie = require('koa-cookie');
 const compress = require('koa-compress');
+const helmet = require('koa-helmet');
 
 const favicon = require('koa-favicon');
 const PORT = 4444;
@@ -61,6 +62,7 @@ if (isProd) {
 app.use(compress({
   flush: require('zlib').Z_SYNC_FLUSH
 }))
+  .use(helmet())
   .use(serve(path.resolve(__dirname, './dist'), {
     maxage: 31536000000
   }))
@@ -101,11 +103,18 @@ const renderData = (ctx, renderer) => {
   });
 };
 router.use(cookie.default());
-router.get('*', async (ctx) => {
+router.get('*/', async (ctx) => {
   const s = Date.now();
   let html,status;
   try {
-    html = await renderData(ctx, renderer);
+    if (ctx.url === '/sw.js') {
+      html = fs.readFileSync('sw.js');
+      ctx.set('Cache-Control', 'no-cache');
+      ctx.type = 'application/javascript';
+      return ctx.body = html;
+    } else {
+      html = await renderData(ctx, renderer);
+    }
   } catch(e) {
     if (e.code === 404) {
       status = 404;
