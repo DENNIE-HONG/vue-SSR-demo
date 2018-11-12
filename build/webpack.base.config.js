@@ -7,7 +7,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { WEBPACK_COMMON_CONFIG } = require('../config/index.js');
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -21,8 +21,7 @@ const config = {
       utils: path.resolve(__dirname, '../src/utils'),
       views: path.resolve(__dirname, '../src/views'),
       api: path.resolve(__dirname, '../src/api'),
-      store: path.resolve(__dirname, '../src/store'),
-      // 'hammerjs$': 'vue-touch/dist/hammer-ssr.js'
+      store: path.resolve(__dirname, '../src/store')
     }
   },
   devtool: isProd ? false : '#cheap-module-source-map',
@@ -35,19 +34,19 @@ const config = {
   },
   plugins: isProd ? [
     new VueLoaderPlugin(),
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash:8].css',
-      chunkFilename: 'css/[name].[contenthash:8].css'
-    })
+    // new MiniCssExtractPlugin({
+    //   filename: 'css/[name].[contenthash:8].css',
+    //   chunkFilename: 'css/[name].[contenthash:8].css'
+    // })
   ]: [
     new VueLoaderPlugin(),
     new StyleLintPlugin({
       files: ['**/*.{vue,htm,html,css,sss,less,scss,sass}'],
     }),
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].css',
-      chunkFilename: 'css/[name].css'
-    })
+    // new MiniCssExtractPlugin({
+    //   filename: 'css/[name].css',
+    //   chunkFilename: 'css/[name].css'
+    // })
   ],
   module: {
     noParse: /es6-promise\.js$/, // avoid webpack shimming process
@@ -65,7 +64,8 @@ const config = {
       {
         test: /\.(css|scss)$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          // MiniCssExtractPlugin.loader,
+          'vue-style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -99,7 +99,7 @@ const config = {
             loader: 'url-loader',
             options: {
               limit: 8192,
-              name: isProd ? '/img/[name].[hash:7].[ext]' : '/img/[name].[ext]'
+              name: isProd ? 'img/[name].[hash:7].[ext]' : 'img/[name].[ext]'
             }
           }
         ]
@@ -111,7 +111,7 @@ const config = {
             loader: 'url-loader',
             options: {
               limit: 2048,
-              name: isProd ? '/fonts/[name].[hash:7].[ext]': '/fonts/[name].[ext]'
+              name: isProd ? 'fonts/[name].[hash:7].[ext]': 'fonts/[name].[ext]'
             }
           }
         ]

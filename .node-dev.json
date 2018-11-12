@@ -2,6 +2,7 @@
   "notify": false,
   "ignore": [
     ".git",
-    "node_modules/**/node_modules"
+    "node_modules/**/node_modules",
+    "README.md"
   ]
 }

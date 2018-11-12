@@ -11,6 +11,7 @@ const WEBPACK_COMMON_CONFIG = {
   assetsDirectory: resolve('dist'), // 资源路径
   projectRoot: resolve('/'),
   assetsViews: resolve('index.html'),
+  assetsPublicPath: '/'
 };
 
 //webpack development 配置

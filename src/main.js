@@ -2,6 +2,7 @@
  * 入口文件
  * @author luyanhong 2018-10-15
 */
+// import 'assets/main.scss';
 import Vue from 'vue';
 import App from './App.vue';
 import { sync } from 'vuex-router-sync';
@@ -15,7 +16,6 @@ import inject from './plugins/inject.js';
 require('./plugins/componentRegister.js');
 
 import { createStore } from './store';
-import 'assets/main.scss';
 import loadingImg from 'assets/img/loading.gif';
 import errorImg from 'assets/img/error.png';
 Vue.use(Meta);

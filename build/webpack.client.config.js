@@ -16,7 +16,7 @@ module.exports = merge(baseConfig, {
     splitChunks: {
       cacheGroups: {
         common: {
-          minChunks: 3,
+          minChunks: 5,
           name: 'common',
           minSize: 1000
         },

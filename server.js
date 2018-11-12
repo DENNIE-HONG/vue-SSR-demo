@@ -11,6 +11,7 @@ const proxy = require('koa-server-http-proxy');
 const { createBundleRenderer } = require('vue-server-renderer');
 const LRU = require('lru-cache');
 const cookie = require('koa-cookie');
+const compress = require('koa-compress');
 
 const favicon = require('koa-favicon');
 const PORT = 4444;
@@ -57,7 +58,12 @@ if (isProd) {
   );
 }
 
-app.use(serve(path.resolve(__dirname, './dist')))
+app.use(compress({
+  flush: require('zlib').Z_SYNC_FLUSH
+}))
+  .use(serve(path.resolve(__dirname, './dist'), {
+    maxage: 31536000000
+  }))
   .use(favicon(__dirname + '/favicon.ico'));
 // proxy
 Object.keys(proxyTable).forEach((context) => {
@@ -72,7 +78,7 @@ const renderData = (ctx, renderer) => {
     cookie: ctx.cookie
   };
   if (!isProd) {
-    readyPromise.then( () => {
+    readyPromise.then(() => {
       return new Promise( (resolve, reject) => {
         renderer.renderToString(context, (err, html) => {
           if (err) {
@@ -81,6 +87,8 @@ const renderData = (ctx, renderer) => {
           resolve(html);
         });
       });
+    }).catch((err) => {
+      console.log(err);
     });
   }
   return new Promise( (resolve, reject) => {
@@ -93,7 +101,7 @@ const renderData = (ctx, renderer) => {
   });
 };
 router.use(cookie.default());
-router.get('*', async (ctx, next) => {
+router.get('*', async (ctx) => {
   const s = Date.now();
   let html,status;
   try {
@@ -102,10 +110,11 @@ router.get('*', async (ctx, next) => {
     if (e.code === 404) {
       status = 404;
       html = '404 | Not Found';
-    }else {
+    } else {
       status = 500;
       html = '500 | Internal Server Error';
       console.error(`error during render : ${ctx.url}`);
+      console.error(e);
     }
   }
   ctx.type = 'html';

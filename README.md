@@ -24,3 +24,10 @@
   获取ctx.cookie后，传入createApp, 再注册到store里，部分需要用到用户登录信息的页面，
   即可直接在SSR里全局获取用户信息。
   同理，client-entry里的createApp，也需要传入cookie信息
+
+6、路由懒加载的vue里用到了css样式报错document is undefined
+  mini-css-extract-plugin不支持ssr, 暂时没有特别好的解决方案
+  要么不要路由懒加载
+  要么不要css提取，改为vue-style-loader
+
+

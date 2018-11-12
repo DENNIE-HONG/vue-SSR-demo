@@ -16,6 +16,7 @@ export default {
 };
 </script>
 <style lang="scss">
+@import './assets/main.scss';
 #app {
   height: 100%;
   display: flex;
