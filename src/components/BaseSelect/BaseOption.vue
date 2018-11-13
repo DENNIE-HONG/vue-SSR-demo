@@ -25,7 +25,15 @@ export default {
       tyep: String
     }
   },
-  created () {
+  // created () {
+  //   // 接收初始选中的值,参数是{Array}，注意必须是引用对象，多个option需要共享同个数组
+  //   this.$on('defaultSelected', (selectedArr) => {
+  //     this.selected = selectedArr;
+  //   });
+  //   this.multiple = this.$parent.multiple;
+  //   this.isGroup = this.$parent.$options._componentTag === 'base-select';
+  // },
+  mounted () {
     // 接收初始选中的值,参数是{Array}，注意必须是引用对象，多个option需要共享同个数组
     this.$on('defaultSelected', (selectedArr) => {
       this.selected = selectedArr;

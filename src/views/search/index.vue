@@ -75,9 +75,6 @@ export default {
     }
   },
   watch: {
-    '$route' () {
-      // window.location.reload(true);
-    },
     'sendData.sort_type' () {
       this.reload();
       this.$refs.loadmore.loadmore();

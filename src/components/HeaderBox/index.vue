@@ -1,7 +1,9 @@
 <template>
   <div class="com-header">
-    <a href="javascript:;" class="com-header-user"><i class="iconfont icon-user"></i></a>
-    <div class="com-header-logo"></div>
+    <router-link
+      class="com-header-user"
+      to="/my"><i class="iconfont icon-user"></i></router-link>
+    <h1 class="com-header-logo">vue-SSR-demo</h1>
     <search-header />
   </div>
 </template>
@@ -36,6 +38,7 @@ export default {
     height: rem(60);
     margin: 0 auto rem(15);
     background: url('./img/logo.png') top/100% no-repeat;
+    text-indent: -999px;
   }
 }
 </style>

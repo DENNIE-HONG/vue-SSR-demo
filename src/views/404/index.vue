@@ -1,7 +1,7 @@
 <template>
   <div class="not-found">
     <div class="not-found-pic"></div>
-    <h1 class="not-found-title">404</h1>
+    <h4 class="not-found-title">404</h4>
     <p class="not-found-txt">this page is missing</p>
   </div>
 </template>

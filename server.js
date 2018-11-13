@@ -103,9 +103,9 @@ const renderData = (ctx, renderer) => {
   });
 };
 router.use(cookie.default());
-router.get('*/', async (ctx) => {
+router.get('*', async (ctx) => {
   const s = Date.now();
-  let html,status;
+  let html, status;
   try {
     if (ctx.url === '/sw.js') {
       html = fs.readFileSync('sw.js');
@@ -127,7 +127,7 @@ router.get('*/', async (ctx) => {
     }
   }
   ctx.type = 'html';
-  ctx.status = status ? status : ctx.status;
+  ctx.status = status ? status : 200;
   ctx.body = html;
   if (!isProd) {
     console.log(`whole request: ${Date.now() - s}ms`);

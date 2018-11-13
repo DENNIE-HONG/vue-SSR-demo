@@ -21,9 +21,9 @@
               {{item.pin}}的提问:
               <span class="pull-right">{{item.created}}</span>
             </div>
-            <h3 class="question-title"><i class="iconfont icon-ask"></i>{{item.content}}</h3>
-            <div class="question-content"><i class="iconfont icon-write"></i>{{item.answerCount ? item.answerList[0].content:
-            '暂无回答'}}</div>
+            <h4 class="question-title"><i class="iconfont icon-ask"></i>{{item.content}}</h4>
+            <article class="question-content"><i class="iconfont icon-write"></i>{{item.answerCount ? item.answerList[0].content:
+            '暂无回答'}}</article>
             <div
               v-if="item.answerCount"
               class="question-more pull-right">查看全部{{item.answerCount}}个回答<i class="iconfont icon-right"></i></div>
@@ -123,7 +123,6 @@ export default {
       @include txthid;
       @include hid;
       @include wordbreak;
-      // vertical-align: bottom;
     }
   }
   &-item {
@@ -138,6 +137,7 @@ export default {
   }
   &-title {
     margin: rem(15) 0;
+    font-size: rem(34);
     > .iconfont {
       padding-right: rem(5);
       color: nth($fyellow, 2);

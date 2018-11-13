@@ -66,7 +66,29 @@ export default {
       selectedNames: []
     }
   },
-  created () {
+  // created () {
+  //   // 接受子组件option传递参数, 当前选中对象，{Object}
+  //   this.$on('selectChange', (data) => {
+  //     if (!this.selected.has(data.name)) {
+  //       // 多选情况/单选情况
+  //       if (this.multiple) {
+  //         this.selected.set(data.name, data.value);
+  //         this.$emit('change', [...this.selected.values()]);
+  //       } else {
+  //         this.showOff();
+  //         this.selected.clear();
+  //         this.selected.set(data.name, data.value);
+  //         this.$emit('change', data.value);
+  //       }
+  //     }
+  //   });
+  //   // 多选情况，接受子组件取消事件
+  //   this.$on('cancelSelected', (data) => {
+  //     this.selected.delete(data.name);
+  //     this.$emit('change', [...this.selected.values()]);
+  //   })
+  // },
+  mounted () {
     // 接受子组件option传递参数, 当前选中对象，{Object}
     this.$on('selectChange', (data) => {
       if (!this.selected.has(data.name)) {
@@ -87,8 +109,6 @@ export default {
       this.selected.delete(data.name);
       this.$emit('change', [...this.selected.values()]);
     })
-  },
-  mounted () {
     // 获取初始选中的option
     this.getSelected();
   },
@@ -156,6 +176,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    &.hide {
+      display: none;
+    }
   }
   &-btn {
     position: absolute;

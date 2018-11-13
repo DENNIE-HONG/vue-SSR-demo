@@ -9,7 +9,11 @@
         class="product-list-item">
         <router-link
           :to="'product/' + list.sku">
-          <div class="product-list-pic"><img v-lazy="imgPrefix + list.img"/></div>
+          <div class="product-list-pic">
+            <img
+              :alt="list.t"
+              v-lazy="imgPrefix + list.img"/>
+          </div>
           <h4 class="product-list-title">{{list.t}}</h4>
           <div class="product-list-info">
             <span>￥{{list.jp / 100}}</span>

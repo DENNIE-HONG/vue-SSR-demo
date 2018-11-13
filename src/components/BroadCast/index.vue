@@ -7,18 +7,21 @@
       @swipeleft="swipeLeft"
       @swiperight="swipeRight"
       :style="{width: 100 * total + '%'}">
-      <router-link
-        :to="'/product/' + item.sku"
+      <li
         v-for="(item, i) in broadcastList"
         :key="item.sku"
-        class="com-broadcast-item"
-        :style="{width: 1/total/column * 100 + '%'}">
-        <div class="pic">
-          <img :src="'//img14.360buyimg.com/mobilecms/s270x270_'+ item.img">
-        </div>
-        <h5 class="com-broadcast-title">{{item.t}}</h5>
-        <span class="com-broadcast-price">{{(item.jp/100).toFixed(2)}}</span>
-      </router-link>
+        :style="{width: 1/total/column * 100 + '%'}"
+        class="com-broadcast-item">
+        <router-link :to="'/product/' + item.sku">
+          <div class="pic">
+            <img
+              :src="'//img14.360buyimg.com/mobilecms/s270x270_'+ item.img"
+              :alt="item.t">
+          </div>
+          <h5 class="com-broadcast-title">{{item.t}}</h5>
+          <span class="com-broadcast-price">{{(item.jp/100).toFixed(2)}}</span>
+        </router-link>
+      </li>
     </v-touch>
     <div class="com-broadcast-page">
       <span

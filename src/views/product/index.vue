@@ -1,16 +1,18 @@
 <template>
   <div class="product">
     <header-banner v-show="isCommentSimple">
-      <span
-        :class="['product-tab', 'iconfont', {active: tabType === 1}]"
-        @click="switchTab('.com-empty', 1)"
-        >商品</span>
-      <span
-        :class="['product-tab', 'iconfont', {active: tabType === 2}]"
-        @click="switchTab('.product-comment', 2)">评价</span>
-      <span
-        :class="['product-tab', 'iconfont', {active: tabType === 3}]"
-        @click="switchTab('.product-guess', 3)">推荐</span>
+      <ul>
+        <li
+          :class="['product-tab', 'iconfont', {active: tabType === 1}]"
+          @click="switchTab('.com-empty', 1)"
+          >商品</li>
+        <li
+          :class="['product-tab', 'iconfont', {active: tabType === 2}]"
+          @click="switchTab('.product-comment', 2)">评价</li>
+        <li
+          :class="['product-tab', 'iconfont', {active: tabType === 3}]"
+          @click="switchTab('.product-guess', 3)">推荐</li>
+      </ul>
     </header-banner>
     <section
       v-show="isCommentSimple"
@@ -28,12 +30,12 @@
       v-if="questionList.length"
       v-show="isCommentSimple"
       class="product-question">
-      <h4 class="title">
+      <h3 class="title">
         问答专区
         <router-link
           class="pull-right"
           :to="'/question/' + productId">查看全部问答<i class="iconfont icon-right"></i></router-link>
-      </h4>
+      </h3>
       <ul class="question-list">
         <li
           v-for="item in questionList"
@@ -47,7 +49,7 @@
     <section
       v-show="isCommentSimple"
       class="product-guess">
-      <h4 class="title">猜你喜欢</h4>
+      <h3 class="title">猜你喜欢</h3>
       <broad-cast
         :broadcastList="broadcastList"/>
     </section>
@@ -173,6 +175,7 @@ export default {
   }
   &-tab {
     margin-right: rem(45);
+    display: inline-block;
     &:last-child {
       margin-right: 0;
     }

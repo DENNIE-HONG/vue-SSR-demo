@@ -46,16 +46,16 @@
               <div class="com-comment-time pull-right">{{item.referenceTime}}</div>
             </div>
             <p class="com-comment-detail">{{item.content}}</p>
-            <div
+            <ul
               v-if="item.imageCount"
               class="com-comment-pics">
-              <div
+              <li
                 v-for="(img, i) in item.images"
                 class="com-comment-pic"
                 @click="checkImgDetail(item.images, i+1)">
                 <img v-lazy="img.imgUrl + '!cc_100x100.dpg'"/>
-              </div>
-            </div>
+              </li>
+            </ul>
         </li>
       </ul>
       <div

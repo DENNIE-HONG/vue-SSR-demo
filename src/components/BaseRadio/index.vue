@@ -58,9 +58,12 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.isGroup = this.$parent.$options._componentTag === 'base-radio-group';
   },
+  // created () {
+  //   this.isGroup = this.$parent.$options._componentTag === 'base-radio-group';
+  // },
   methods: {
     onChange ($event) {
       // 选中的值没有改变, 也要关闭弹窗

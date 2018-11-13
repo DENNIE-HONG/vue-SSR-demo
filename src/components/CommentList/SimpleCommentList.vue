@@ -2,13 +2,13 @@
   <div class="simple">
     <div
       v-if="commentList.length">
-      <div class="com-comment-tab">
+      <h3 class="com-comment-tab">
         评价
         <span class="tab-good-score">好评{{summary.GoodRateShow}}%</span>
         <div
           class="pull-right"
           @click="checkMore">共 {{summary.CommentCountStr}} 条<i class="iconfont icon-right"></i></div>
-      </div>
+      </h3>
       <div
         class="com-comment-type"
         @click="changeScore($event)">
@@ -38,16 +38,16 @@
             <p
               class="com-comment-detail"
               @click="checkMore">{{item.content}}</p>
-            <div
+            <ul
               v-if="item.imageCount"
               class="com-comment-pics">
-              <div
+              <li
                 v-for="(img, index) in item.images"
                 class="com-comment-pic"
                 @click="checkImgDetail(item.images, index + 1)">
                 <img :src="img.imgUrl + '!cc_100x100.dpg'"/>
-              </div>
-            </div>
+              </li>
+            </ul>
         </li>
       </ul>
       <div

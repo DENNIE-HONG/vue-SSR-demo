@@ -64,6 +64,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  &.hide {
+    display: none;
+  }
   .com-radio-box {
     width: 80%;
     padding: 0 rem(20);

@@ -7,6 +7,7 @@
           <img
             class="my-avatar"
             :src="avatar"
+            :alt="name"
           />
           <span v-if="isLogin">{{name}}</span>
         </div>

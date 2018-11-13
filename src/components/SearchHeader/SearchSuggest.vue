@@ -24,11 +24,13 @@
     </article>
     <section v-show="historyWords.length">
       <h3>历史搜索</h3>
-      <span
-        v-for="tag in historyWords"
-        class="tag"
-        @click="linkToSearch(tag)">{{tag}}
-      </span>
+      <ul>
+        <li
+          v-for="tag in historyWords"
+          class="tag"
+          @click="linkToSearch(tag)">{{tag}}
+        </li>
+      </ul>
     </section>
   </div>
 </template>
