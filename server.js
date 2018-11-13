@@ -136,5 +136,8 @@ router.get('*', async (ctx) => {
 app.use(router.routes())
   .use(router.allowedMethods())
   .listen(PORT, () => {
-    console.log(`server started at 127.0.0.1:${PORT}`);
+    console.log(`open http://127.0.0.1:${PORT}`);
+  })
+  .on('error', (err) => {
+    console.error(err);
   });

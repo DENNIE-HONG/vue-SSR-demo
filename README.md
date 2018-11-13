@@ -33,3 +33,11 @@
 7、生产环境页面404
   koa的ctx.status 默认是404，路由成功后需要设置为200
 
+8、本地使用http2
+  使用spdy模块，需要生成安全证书
+  生成证书命令：
+  openssl genrsa 1024 > /key/key.pem
+  生成安全证书命令：
+  openssl req -x509 -new -key ./key/key.pem > key/key-cert.pem
+
+
