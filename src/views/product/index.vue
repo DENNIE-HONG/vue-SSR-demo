@@ -96,7 +96,7 @@ export default {
         'content': 'vue商品详情页'
       },
       {
-        'property': 'description',
+        'name': 'description',
         'content': 'vue商品详情页'
       }
     ]

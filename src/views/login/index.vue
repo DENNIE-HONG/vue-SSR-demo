@@ -45,7 +45,7 @@ export default {
         'content': 'vue登录页'
       },
       {
-        'property': 'description',
+        'name': 'description',
         'content': 'vue登录页'
       }
     ]

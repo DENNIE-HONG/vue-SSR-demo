@@ -13,6 +13,7 @@ const LRU = require('lru-cache');
 const cookie = require('koa-cookie');
 const compress = require('koa-compress');
 const helmet = require('koa-helmet');
+const logger = require('koa-logger');
 
 const favicon = require('koa-favicon');
 const PORT = 4444;
@@ -66,6 +67,7 @@ app.use(compress({
   .use(serve(path.resolve(__dirname, './dist'), {
     maxage: 31536000000
   }))
+  .use(logger())
   .use(favicon(__dirname + '/favicon.ico'));
 // proxy
 Object.keys(proxyTable).forEach((context) => {
@@ -102,37 +104,48 @@ const renderData = (ctx, renderer) => {
     });
   });
 };
+
 router.use(cookie.default());
-router.get('*', async (ctx) => {
-  const s = Date.now();
-  let html, status;
-  try {
-    if (ctx.url === '/sw.js') {
-      html = fs.readFileSync('sw.js');
+// 爬虫协议
+router
+  .get('/robots.txt', (ctx, next) => {
+    try {
+      const txt = fs.readFileSync('robots.txt');
+      ctx.type = 'text/plain;charset=utf-8';
+      ctx.body = txt;
+    } catch (err) {
+      next();
+    }
+  }) // server worker
+  .get('/sw.js', (ctx, next) => {
+    try {
+      const jsFile = fs.readFileSync('sw.js');
       ctx.set('Cache-Control', 'no-cache');
       ctx.type = 'application/javascript';
-      return ctx.body = html;
-    } else {
+      ctx.body = jsFile;
+    } catch (err) {
+      throw next();
+    }
+  })
+  .get('*', async (ctx) => {
+    let html, status;
+    try {
       html = await renderData(ctx, renderer);
+    } catch(e) {
+      if (e.code === 404) {
+        status = 404;
+        html = '404 | Not Found';
+      } else {
+        status = 500;
+        html = '500 | Internal Server Error';
+        console.error(`error during render : ${ctx.url}`);
+        console.error(e);
+      }
     }
-  } catch(e) {
-    if (e.code === 404) {
-      status = 404;
-      html = '404 | Not Found';
-    } else {
-      status = 500;
-      html = '500 | Internal Server Error';
-      console.error(`error during render : ${ctx.url}`);
-      console.error(e);
-    }
-  }
-  ctx.type = 'html';
-  ctx.status = status ? status : 200;
-  ctx.body = html;
-  if (!isProd) {
-    console.log(`whole request: ${Date.now() - s}ms`);
-  }
-});
+    ctx.type = 'html';
+    ctx.status = status ? status : 200;
+    ctx.body = html;
+  });
 app.use(router.routes())
   .use(router.allowedMethods())
   .listen(PORT, () => {

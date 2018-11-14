@@ -35,6 +35,19 @@ import ConfirmBox from 'coms/ConfirmBox';
 import EmptyList from 'coms/EmptyList';
 export default {
   name: 'Cart',
+  metaInfo: {
+    title: 'not-found',
+    meta: [
+      {
+        'property': 'keywords',
+        'content': 'vue-SSR 购物车页'
+      },
+      {
+        'name': 'description',
+        'content': 'vue-SSR 购物车页'
+      }
+    ]
+  },
   components: {
     HeaderBanner,
     CartItemGroup,

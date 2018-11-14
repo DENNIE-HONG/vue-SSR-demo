@@ -3,7 +3,7 @@
     <header-banner>
       <search-header :defaultValue="keyword"/>
     </header-banner>
-    <nav class="tab">
+    <ul class="tab">
       <li
         :class="['tab-item', {active: searchType === 1}]"
         @click="changeType(1)">
@@ -32,7 +32,7 @@
         </base-select>
         <i class="iconfont icon-down"></i>
       </li>
-    </nav>
+    </ul>
     <product-list :productList="searchList" imgPrefix="//img11.360buyimg.com/n7/s360x360_"/>
     <empty-list v-if="firstLoadEmpty" text="暂时搜索不到该商品"/>
     <load-more v-if="keyword" :url="url" :success="loadSuccess" :params="sendData" ref="loadmore" async/>
@@ -61,7 +61,7 @@ export default {
         'content': 'vue SSR 练习搜索页'
       },
       {
-        'property': 'description',
+        'name': 'description',
         'content': 'vue SSR 练习搜索页'
       }
     ]

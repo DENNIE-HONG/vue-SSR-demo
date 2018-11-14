@@ -114,7 +114,7 @@ export default {
         'content': 'vue设置页'
       },
       {
-        'property': 'description',
+        'name': 'description',
         'content': 'vue练习设置也'
       }
     ]

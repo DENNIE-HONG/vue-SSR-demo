@@ -10,20 +10,14 @@
       <load-more :url="url" :success="loadSuccess" :params="sendData" ref="loadmore"/>
     </section>
     <footer class="home-footer">
-      <ul>
-        <li class="home-footer-item">
-          <router-link
-            class="active"
-            to="/"><i class="iconfont icon-home"></i><p class="footer-txt">首页</p>
-          </router-link>
-        </li>
-        <li class="home-footer-item">
-          <router-link to="/cart"><i class="iconfont icon-cart"></i><p class="footer-txt">购物车</p></router-link>
-        </li>
-        <li class="home-footer-item">
-          <router-link to="/my"><i class="iconfont icon-user"></i><p class="footer-txt">我的</p></router-link>
-        </li>
-      </ul>
+      <nav>
+        <router-link
+          class="active"
+          to="/"><i class="iconfont icon-home"></i><p class="footer-txt">首页</p>
+        </router-link>
+        <router-link to="/cart"><i class="iconfont icon-cart"></i><p class="footer-txt">购物车</p></router-link>
+        <router-link to="/my"><i class="iconfont icon-user"></i><p class="footer-txt">我的</p></router-link>
+      </nav>
     </footer>
   </div>
 </template>
@@ -117,7 +111,7 @@ export default {
     bottom: 0;
     box-sizing: border-box;
     box-shadow: 0 0 10px 0 hsla(0,6%,58%,.6);
-    > ul {
+    > nav {
       display: flex;
       height: 100%;
       justify-content: space-around;

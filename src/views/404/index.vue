@@ -13,11 +13,11 @@ export default {
     meta: [
       {
         'property': 'keywords',
-        'content': 'vue404页'
+        'content': 'vue-SSR 404页'
       },
       {
-        'property': 'description',
-        'content': 'vue404页'
+        'name': 'description',
+        'content': 'vue-SSR 404页'
       }
     ]
   }

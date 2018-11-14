@@ -40,4 +40,5 @@
   生成安全证书命令：
   openssl req -x509 -new -key ./key/key.pem > key/key-cert.pem
 
-
+9、css压缩
+  由于用了vue-style-loader, css压缩改为postcss配置里使用cssnano

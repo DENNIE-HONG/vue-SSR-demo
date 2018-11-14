@@ -53,7 +53,9 @@
                 v-for="(img, i) in item.images"
                 class="com-comment-pic"
                 @click="checkImgDetail(item.images, i+1)">
-                <img v-lazy="img.imgUrl + '!cc_100x100.dpg'"/>
+                <img
+                  v-lazy="img.imgUrl + '!cc_100x100.dpg'"
+                  alt="用户评论" />
               </li>
             </ul>
         </li>

@@ -1,11 +1,11 @@
 <template>
   <div class="com-basetab">
-    <nav class="com-basetab-box">
+    <ul class="com-basetab-box">
       <li
         v-for="(tab, index) in tabs"
         :class="['tab', { active: tab.name === activeName }]"
         @click="changeTab(tab.name, index)">{{tab.label}}</li>
-    </nav>
+    </ul>
     <div
       class="com-basetab-content"
       ref="pane"

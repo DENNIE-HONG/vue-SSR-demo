@@ -37,6 +37,19 @@
 import HeaderBanner from 'coms/HeaderBanner/index.vue';
 export default {
   name: 'My',
+  metaInfo: {
+    title: 'profile',
+    meta: [
+      {
+        'property': 'keywords',
+        'content': 'vue-SSR 个人页'
+      },
+      {
+        'name': 'description',
+        'content': 'vue-SSR 个人页'
+      }
+    ]
+  },
   components: {
     HeaderBanner
   },
