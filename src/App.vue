@@ -8,6 +8,7 @@
 </template>
 <script>
 import TheFooter from 'coms/Layout/TheFooter';
+import '@babel/polyfill';
 export default {
   name: 'app',
   components: {
